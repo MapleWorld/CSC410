@@ -1,10 +1,19 @@
+predicate sorted(a:array<int>, min:int, max:int)
+requires a != null;
+requires 0<= min <= max <= a.Length;
+reads a;
+{
+  forall j, k :: min <= j < k < max ==> a[j] <= a[k]
+}
+
 method stoogeSort(a: array < int > , left: int, right: int) 
     //pre-conditions
     modifies a;
     requires a != null;
     requires a.Length > 0;
     //post-conditions
-    ensures forall j,k: int :: 0 <= j < k < a.Length ==> a[j] <= a[k]; // All sorted
+    ensures sorted(a, left, right);
+    ensures forall i ::( 0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
 {
     if (a[left] > a[right]) {
         // swap a[left] and a[right]
@@ -21,18 +30,14 @@ method stoogeSort(a: array < int > , left: int, right: int)
 }
 /*
 Note from professor in 2013 year
-
 After each recursive call, I know that 
-
 - a[left .. right] is sorted. 
 - a[1 .. left-1] and a[right+1 .. a.length - 1 ] is unchanged (you can use "old" for this)
 - a[left] is the minimum of a[left .. right] range
 - a[right] is the maximum of a[left .. right] range
 
 These, all of you agree with trivially. You just may or may not have forgotten to include all the facts in your argument.
-
 The more interesting facts are:
-
 - sorting does not affect the value of the minimum of the interval being sorted.
 - sorting does not affect the value of the maximum of the interval being sorted. 
 
@@ -43,6 +48,4 @@ You are supposed to use "old" over elements of the array (or groups of them). Fo
 When I soft from left to right, and want to say that the rest of the elements do not change, I would say (not the correct syntax):
 
 forall k > right, a[k] == old(a[k])
-
-
 */
