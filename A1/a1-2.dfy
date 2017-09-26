@@ -14,6 +14,10 @@ method stoogeSort(a: array < int > , left: int, right: int)
     //post-conditions
     ensures sorted(a, left, right);
     ensures forall i ::( 0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
+    ensures a[left] == min(a,left,right);  
+    ensures a[right] == max(a,left,right);
+    ensures min(a, left, right) == old(min(a, left, right));
+    ensures max(a, left, right) == old(max(a, left, right));
 {
     if (a[left] > a[right]) {
         // swap a[left] and a[right]
