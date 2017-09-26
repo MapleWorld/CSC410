@@ -1,6 +1,6 @@
 predicate sorted(a:array<int>, min:int, max:int)
 requires a != null;
-requires 0<= min <= max <= a.Length;
+requires 0 <= min <= max <= a.Length;
 reads a;
 {
     forall j, k :: min <= j < k < max ==> a[j] <= a[k]
