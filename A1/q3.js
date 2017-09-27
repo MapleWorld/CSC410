@@ -4,8 +4,10 @@ function unpair(i) {
 	var next = result[1];
 	var x = i - sum;
 	var y = next - x - 1;
-	console.log("i = " + i + " x = " + x + " y = " + y);
+	var z = ((x + y) * (x + y + 1)) / 2 + x;
+	console.log("i = " + i + " x = " + x + " y = " + y + " sum = " + (x + i * y) + " x+y= "+ (x+y) + " z = " + z);
 }
+//while a + i * b != pick (i)
 
 function findSum(sum, next, i) {
     if (sum + next <= i) {
@@ -21,6 +23,7 @@ for (var t = 0; t < 10; t++) {
 }
 //unpair(8);
 /*
+		Index	
 0		0 		0,0
 1		1		0,1
 1		2		1,0
@@ -32,3 +35,11 @@ for (var t = 0; t < 10; t++) {
 3		8		2,1
 3		9		3,0
 */
+
+
+
+
+
+
+
+
