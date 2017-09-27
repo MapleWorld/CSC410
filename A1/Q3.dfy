@@ -29,23 +29,16 @@ requires next >= 0;
 decreases i - sum - next
 ensures sum <= i;
 {
-    if (sum + next <= i) then findSum(sum + next, next + 1, i) else (sum, next)
-}
-function method substract(a :nat, b : nat): nat
-requires a >= b;
-{
-    a - b
+    if (sum + next <= i) then findSum(sum + next, next + 1, i) else (i - sum, next - (i - sum) - 1)
 }
 
 function method unpair (i: nat ): (nat, nat)
 requires i >= 0;
 { // TODO 
-    var (sum, next) := findSum(0, 0, i);
-    var x := i - sum;
-    //var x := substract(i, sum);
+    var (x, y) := findSum(0, 0, i);
+    //var x := i - sum;
     //var y := next - x - 1;
-    var y:= 2;
-    var part := (x, y);
+    var part := (x,y);
     part
 }
 
