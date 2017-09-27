@@ -11,12 +11,23 @@ MathUtils.reverseCantorPair = function(i)
 }
 
 */
-function sqrt(x: nat, target: nat): nat
+/*
+How the sqrt function works:
+Guess a number, in this case we use 'x'
+Check if x * x > target,
+If it is, then find a new value that is the average of 'x' and the target number
+Check the new value recursively 
+Return 'x' if the product of itself is lower than the target value
+
+Check https://leetcode.com/problems/sqrtx/discuss/
+For iterative implementation of the sqrt function 
+*/
+function method sqrt(x: nat, target: nat): nat
 {
     if (x * x > target) then sqrt(((x + target / x) / 2), target) else x
 }
 
-function floor(x: nat): nat
+function method floor(x: nat): nat
 {
     var n := x - (x % 1);
     x
