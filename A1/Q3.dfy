@@ -32,9 +32,9 @@ function method floor(x: nat): nat
     x - (x % 1)
 }
 
-function method unpair (i: nat ): nat
+function method unpair (i: nat ): (nat, nat)
 { // TODO 
-    var t := floor((-1 + sqrt(1 + 8 * i, 1 + 8 * i))/2);
+    var t := floor((-1 + sqrt(1 + 8 * i, 1 + 8 * i)) / 2);
     var x := t * (t + 3) / 2 - i;
     var y := i - t * (t + 1) / 2;
     var part := (x,y);

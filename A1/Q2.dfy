@@ -55,10 +55,10 @@ method stoogeSort(a: array <int>, left: int, right: int)
     modifies a;
     ensures sorted(a, left, right);
     ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
-    ensures a[left] == findMin(a,left,right);
-    ensures a[right] == findMax(a,left,right);
-    ensures findMin(a, left, right) == old(findMin(a, left, right));
-    ensures findMax(a, left, right) == old(findMax(a, left, right));
+    ensures a[left] == findMin(a,left,right);
+    ensures a[right] == findMax(a,left,right);
+    ensures findMin(a, left, right) == old(findMin(a, left, right));
+    ensures findMax(a, left, right) == old(findMax(a, left, right));
     
     // Something wrong with this line
     // Check Termination Section on how to terminate properly
