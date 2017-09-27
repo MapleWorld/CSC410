@@ -30,7 +30,7 @@ function method sqrt(x: nat, target: nat): nat
 function method floor(x: nat): nat
 {
     var n := x - (x % 1);
-    x
+    n
 }
 
 function method unpair (i: nat ): nat
