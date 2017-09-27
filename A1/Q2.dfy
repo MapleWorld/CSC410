@@ -59,6 +59,10 @@ method stoogeSort(a: array <int>, left: int, right: int)
     ensures a[right] == findMax(a,left,right);
     ensures findMin(a, left, right) == old(findMin(a, left, right));
     ensures findMax(a, left, right) == old(findMax(a, left, right));
+    
+    // Something wrong with this line
+    // Check Termination Section on how to terminate properly
+    // http://rise4fun.com/Dafny/tutorial
     decreases right - left;
 {
     if (a[left] > a[right]) {
