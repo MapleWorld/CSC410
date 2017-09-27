@@ -12,9 +12,9 @@ MathUtils.reverseCantorPair = function(i)
 
 */
 /*
-How the sqrt function works:
+How the sqrt function w==orks:
 Guess a number, in this case we use 'x'
-Check if x * x > target,
+Check if x * x > target,z
 If it is, then find a new value that is the average of 'x' and the target number
 Check the new value recursively 
 Return 'x' if the product of itself is lower than the target value
@@ -22,21 +22,17 @@ Return 'x' if the product of itself is lower than the target value
 Check https://leetcode.com/problems/sqrtx/discuss/
 For iterative implementation of the sqrt function 
 */
-function method sqrt(x: nat, target: nat): nat
+function method findSum(sum : nat, next: nat, i : nat): (nat, nat)
+decreases i - sum - next
 {
-    if (x * x > target) then sqrt(((x + target / x) / 2), target) else x
-}
-
-function method floor(x: nat): nat
-{
-    x - (x % 1)
+    if (sum + next <= i) then findSum(sum + next, next + 1, i) else (sum, next)
 }
 
 function method unpair (i: nat ): (nat, nat)
 { // TODO 
-    var t := floor((-1 + sqrt(1 + 8 * i, 1 + 8 * i)) / 2);
-    var x := t * (t + 3) / 2 - i;
-    var y := i - t * (t + 1) / 2;
+    var (sum, next) := findSum(0, 0, i);
+    var x := i - sum;
+    var y := next - x - 1;
     var part := (x,y);
     part
 }
