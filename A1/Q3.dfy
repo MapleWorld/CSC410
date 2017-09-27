@@ -23,17 +23,29 @@ Check https://leetcode.com/problems/sqrtx/discuss/
 For iterative implementation of the sqrt function 
 */
 function method findSum(sum : nat, next: nat, i : nat): (nat, nat)
+requires i >= 0;
+requires sum >= 0 && sum <= i;
+requires next >= 0;
 decreases i - sum - next
+ensures sum <= i;
 {
     if (sum + next <= i) then findSum(sum + next, next + 1, i) else (sum, next)
 }
+function method substract(a :nat, b : nat): nat
+requires a >= b;
+{
+    a - b
+}
 
 function method unpair (i: nat ): (nat, nat)
+requires i >= 0;
 { // TODO 
     var (sum, next) := findSum(0, 0, i);
     var x := i - sum;
-    var y := next - x - 1;
-    var part := (x,y);
+    //var x := substract(i, sum);
+    //var y := next - x - 1;
+    var y:= 2;
+    var part := (x, y);
     part
 }
 
