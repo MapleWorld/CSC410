@@ -24,20 +24,34 @@ function method pick (i: nat ): nat
     x + i * y
 }
 
+function method findFinalIndex(a: nat , b: nat ): nat
+{
+    ((a + b) * (a + b + 1)) / 2 + a
+    // Will compile if I change to 6
+    //6
+}
+
 method catchTheSpy (a: nat , b: nat )
+requires findFinalIndex(a,b) >= 0;
+requires findFinalIndex(a,b) == pick(findFinalIndex(a,b))
 {
     var i := 0;
-    var z := ((a + b) * (a + b + 1)) / 2 + a;
+    var z := findFinalIndex(a, b);
     while a + i * b != pick (i)
-    //invariant (((a + b) * (a + b + 1)) / 2 + a) > i;
-    //invariant (a + b) >= findXYSum(i);
+    invariant z >= i;
+    //invariant (a + b) >= findXYSum(i); 
     //decreases ((a + b) - findXYSum(i)), findY(i); 
-    //decreases z - i; 
+    decreases z - i; 
     { 
         i := i + 1; 
     }
 }
 
+
+
+
+
+// Testing methods
 function method findXYSum(i: nat): nat
 {
     var (x, y) := unpair (i);
@@ -49,6 +63,4 @@ function method findY(i: nat): nat
     var (x, y) := unpair (i);
     y
 }
-// a + i * b == x + i * y
-
 
