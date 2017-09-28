@@ -27,13 +27,11 @@ function method pick (i: nat ): nat
 function method findFinalIndex(a: nat , b: nat ): nat
 {
     ((a + b) * (a + b + 1)) / 2 + a
-    // Will compile if I change to 6
-    //6
 }
 
 method catchTheSpy (a: nat , b: nat )
 requires findFinalIndex(a,b) >= 0;
-requires findFinalIndex(a,b) == pick(findFinalIndex(a,b))
+requires a + findFinalIndex(a,b) * b == pick(findFinalIndex(a,b))
 {
     var i := 0;
     var z := findFinalIndex(a, b);
