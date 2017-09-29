@@ -39,19 +39,19 @@ function method findMin (a: array<int>, left: int, right: int): int
 }
 
 method stoogeSort(a: array <int>, left: int, right: int) 
+    modifies a;
     requires a != null;
     requires a.Length > 0;
     requires 0 <= left <= right < a.Length;
     requires 0 <= findMin(a, left, right) < a.Length;
     requires 0 <= findMax(a, left, right) < a.Length;
-    modifies a;
+    
     //ensures sorted(a, left, right);
-    ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
     ensures a[left] == a[findMin(a, left, right)];
     // ensures a[right] == a[findMax(a, left, right)];
     // ensures findMin(a, left, right) == old(findMin(a, left, right));
     // ensures findMax(a, left, right) == old(findMax(a, left, right));
-
+    ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
     decreases right - left;
 {
     if (a[left] > a[right]) {
