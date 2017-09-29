@@ -47,8 +47,6 @@ function findMax (a: array<int>, left: int, right: int): int
 }
 
 method stoogeSort(a: array <int>, left: int, right: int) 
-    decreases left;
-    decreases right;
     requires a != null;
     requires a.Length > 0;
     requires 1 <= left <= right <= a.Length - 1;
