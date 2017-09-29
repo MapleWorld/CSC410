@@ -13,7 +13,8 @@ function method findMax (a: array<int>, left: int, right: int): int
     requires a != null && a.Length > 0;
     requires 0 <= left <= right < a.Length;
     ensures  0 <= left <= right < a.Length;
-    ensures  0 <= findMax(a, left, right) < a.Length;
+    ensures  left <= findMax(a, left, right) <= right;
+    ensures forall i :: left <= i <= right ==> a[i] <= a[findMax(a, left, right)];
 {
     if (left < right) then 
         if (a[left] < a[right]) then 
@@ -29,7 +30,8 @@ function method findMin (a: array<int>, left: int, right: int): int
     requires a != null && a.Length > 0;
     requires 0 <= left <= right < a.Length;
     ensures  0 <= left <= right < a.Length;
-    ensures  0 <= findMin(a, left, right) < a.Length;
+    ensures  left <= findMin(a, left, right) <= right;
+    ensures forall i :: left <= i <= right ==> a[i] >= a[findMin(a, left, right)];
 {
     if (left < right) then 
         if (a[left] < a[right]) then 
@@ -48,7 +50,7 @@ method stoogeSort(a: array <int>, left: int, right: int)
     
     //ensures sorted(a, left, right);
     ensures a[left] == a[findMin(a, left, right)];
-    // ensures a[right] == a[findMax(a, left, right)];
+    //ensures a[right] == a[findMax(a, left, right)];
     // ensures findMin(a, left, right) == old(findMin(a, left, right));
     // ensures findMax(a, left, right) == old(findMax(a, left, right));
     ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
@@ -70,22 +72,22 @@ method stoogeSort(a: array <int>, left: int, right: int)
 }
 
 // Find the bigger one, a[left] or a[right]
-function method max (a: array<int>, left: int, right: int): int
-    requires a != null && a.Length > 0;
-    requires 0 < left <= right < a.Length;
-    reads a;
-{
-    if (a[left] > a[right]) then left else right
-}
+// function method max (a: array<int>, left: int, right: int): int
+//     requires a != null && a.Length > 0;
+//     requires 0 < left <= right < a.Length;
+//     reads a;
+// {
+//     if (a[left] > a[right]) then left else right
+// }
 
-// Find the smaller one, a[left] or a[right]
-function method min (a: array<int>, left: int, right: int): int
-    requires a != null && a.Length > 0;
-    requires 0 < left <= right < a.Length;
-    reads a;
-{
-    if (a[left] > a[right]) then right else left
-}
+// // Find the smaller one, a[left] or a[right]
+// function method min (a: array<int>, left: int, right: int): int
+//     requires a != null && a.Length > 0;
+//     requires 0 < left <= right < a.Length;
+//     reads a;
+// {
+//     if (a[left] > a[right]) then right else left
+// }
 /*
 Note from professor in 2013 year
 After each recursive call, I know that 
