@@ -15,6 +15,7 @@ modifies a;
     while (i < a.Length)
     invariant 1 <= i <= a.Length;
     invariant sorted(a, 0, i);
+    decreases a.Length - i;
   {
         var j := i;
         var value := a[i];
@@ -22,6 +23,7 @@ modifies a;
         while (j > 0 && a[j - 1] > value)
         invariant sorted(a, 0, i + 1);
         invariant forall k :: j - 1 < k < i ==> a[k] > value;
+        decreases j;
         {
             a[j] := a[j - 1];
             j := j - 1;
