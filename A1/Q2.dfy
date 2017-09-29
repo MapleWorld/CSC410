@@ -8,10 +8,10 @@ reads a;
 
 // Find maximum element in the array between left and right
 function method findMax (a: array<int>, left: int, right: int): int
-    requires a != null && a.Length > 0;
-    requires 0 < left <= right < a.Length;
     reads a;
     decreases right - left;
+    requires a != null && a.Length > 0;
+    requires 0 < left <= right < a.Length;
     ensures  0 < left <= right < a.Length;
 {
     if (left < right) then 
@@ -23,10 +23,10 @@ function method findMax (a: array<int>, left: int, right: int): int
 
 // Find minimum element in the array between left and right
 function method findMin (a: array<int>, left: int, right: int): int
-    requires a != null && a.Length > 0;
-    requires 0 < left <= right < a.Length;
     reads a;
     decreases right - left;
+    requires a != null && a.Length > 0;
+    requires 0 < left <= right < a.Length;
     ensures  0 < left <= right < a.Length;
 {
     if (left < right) then 
