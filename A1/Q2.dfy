@@ -1,6 +1,6 @@
 predicate sorted(a:array<int>, min:int, max:int)
 requires a != null;
-requires 0 < min <= max < a.Length;
+requires 0 <= min <= max < a.Length;
 reads a;
 {
     forall j, k :: min <= j < k < max ==> a[j] <= a[k]
@@ -11,13 +11,14 @@ function method findMax (a: array<int>, left: int, right: int): int
     reads a;
     decreases right - left;
     requires a != null && a.Length > 0;
-    requires 0 < left <= right < a.Length;
-    ensures  0 < left <= right < a.Length;
+    requires 0 <= left <= right < a.Length;
+    ensures  0 <= left <= right < a.Length;
+    ensures  0 <= findMax(a, left, right) < a.Length;
 {
     if (left < right) then 
         if (a[left] < a[right]) then 
-            findMin(a, left + 1, right) 
-        else findMin(a, left, right - 1) 
+            findMax(a, left + 1, right) 
+        else findMax(a, left, right - 1) 
     else right
 }
 
@@ -26,8 +27,9 @@ function method findMin (a: array<int>, left: int, right: int): int
     reads a;
     decreases right - left;
     requires a != null && a.Length > 0;
-    requires 0 < left <= right < a.Length;
-    ensures  0 < left <= right < a.Length;
+    requires 0 <= left <= right < a.Length;
+    ensures  0 <= left <= right < a.Length;
+    ensures  0 <= findMin(a, left, right) < a.Length;
 {
     if (left < right) then 
         if (a[left] < a[right]) then 
@@ -39,13 +41,13 @@ function method findMin (a: array<int>, left: int, right: int): int
 method stoogeSort(a: array <int>, left: int, right: int) 
     requires a != null;
     requires a.Length > 0;
-    requires 0 < left <= right < a.Length;
-    requires 0 < findMin(a, left, right) < a.Length;
-    //requires 0 < findMax(a, left, right) < a.Length;
+    requires 0 <= left <= right < a.Length;
+    requires 0 <= findMin(a, left, right) < a.Length;
+    requires 0 <= findMax(a, left, right) < a.Length;
     modifies a;
-    ensures sorted(a, left, right);
+    //ensures sorted(a, left, right);
     ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
-    // ensures a[left] == a[findMin(a, left, right)];
+    ensures a[left] == a[findMin(a, left, right)];
     // ensures a[right] == a[findMax(a, left, right)];
     // ensures findMin(a, left, right) == old(findMin(a, left, right));
     // ensures findMax(a, left, right) == old(findMax(a, left, right));
