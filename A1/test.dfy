@@ -1,17 +1,29 @@
-method stoogeSort(a : array<int>, left : int, right : int)
+// Find minimum element in the array between left and right
+function method findMin (a: array<int>, left: int, right: int): int
+    reads a;
+    decreases right - left;
+    requires a != null && a.Length > 0;
+    requires 0 <= left <= right < a.Length;
+    ensures  0 <= left <= right < a.Length;
 {
+    if (left < right) then 
+        if (a[left] < a[right]) then 
+            findMin(a, left, right - 1) 
+        else findMin(a, left + 1, right) 
+    else left
+}
 
-    if (a[left] > a[right]) {
-        // swap a[left] and a[right]
-        var tmp := a[left];
-        a[left] := a[right];
-        a[right] := tmp;
-    }
+method stoogeSort(a: array <int>, left: int, right: int) 
+    decreases right - left;
+    requires a != null && a.Length > 0;
+    requires 0 <= left <= right < a.Length;
+    requires 0 <= findMin(a, left, right) < a.Length;
+    ensures 0 <= left <= right < a.Length;
+{
     if (left + 1 >= right) {
         return;
     }
-    var k := (right - left + 1) / 3;
-    stoogeSort(a,left, right - k); // First two-thirds
-    stoogeSort(a,left + k, right); // Last two-thirds
-    stoogeSort(a,left, right - k); // First two-thirds again
+    stoogeSort(a, left, right - 1); 
+    stoogeSort(a, left + 1, right);
 }
+
