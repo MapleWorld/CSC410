@@ -6,13 +6,27 @@ reads a;
     forall j, k :: min <= j < k < max ==> a[j] <= a[k]
 }
 
-// Find the smaller one, a[left] or a[right]
-function min (a: array<int>, left: int, right: int): int
+// Find maximum element in the array between left and right
+function method findMax (a: array<int>, left: int, right: int): int
     requires a != null && a.Length > 0;
     requires 0 < left <= right < a.Length;
     reads a;
+    decreases right - left;
 {
-    if (a[left] > a[right]) then a[right] else a[left]
+    if (left == right) then a[left] else 
+        if (a[left] < a[right]) then findMax(a, left + 1, right) else findMax(a, left, right - 1)
+}
+
+
+// Find minimum element in the array between left and right
+function method findMin (a: array<int>, left: int, right: int): int
+    requires a != null && a.Length > 0;
+    requires 0 < left <= right < a.Length;
+    reads a;
+    decreases right - left;
+{
+    if (left == right) then a[left] else 
+        if (a[left] < a[right]) then findMin(a, left, right - 1) else findMin(a, left + 1, right)
 }
 
 // Find the bigger one, a[left] or a[right]
@@ -24,43 +38,37 @@ function max (a: array<int>, left: int, right: int): int
     if (a[left] > a[right]) then a[left] else a[right]
 }
 
-// Find minimum element in the array between left and right
-function findMin (a: array<int>, left: int, right: int): int
+// Find the smaller one, a[left] or a[right]
+function min (a: array<int>, left: int, right: int): int
     requires a != null && a.Length > 0;
     requires 0 < left <= right < a.Length;
     reads a;
-    decreases right - left;
 {
-    if (left == right) then a[left] else 
-        if (a[left] < a[right]) then findMin(a, left, right - 1) else findMin(a, left + 1, right)
+    if (a[left] > a[right]) then a[right] else a[left]
 }
 
-// Find maximum element in the array between left and right
-function findMax (a: array<int>, left: int, right: int): int
-    requires a != null && a.Length > 0;
-    requires 0 < left <= right < a.Length;
-    reads a;
-    decreases right - left;
-{
-    if (left == right) then a[left] else 
-        if (a[left] < a[right]) then findMax(a, left + 1, right) else findMax(a, left, right - 1)
-}
+// method testFindMin(a: array <int>, left: int, right: int) returns (index: int)
+//     requires a != null;
+//     requires a.Length > 0;
+//     requires 1 <= left <= right <= a.Length - 1;
+//     requires forall j:: left <= j <= right ==> a[j] >= a[0];
+//     ensures forall j:: left <= j <= right ==> a[j] >= a[index];
+// {
+//     index := findMin(a, left, right);
+// }
 
 method stoogeSort(a: array <int>, left: int, right: int) 
     requires a != null;
     requires a.Length > 0;
     requires 1 <= left <= right <= a.Length - 1;
     modifies a;
-    ensures sorted(a, left, right);
+    //ensures sorted(a, left, right);
     ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
-    ensures a[left] == findMin(a,left,right);
-    ensures a[right] == findMax(a,left,right);
-    ensures findMin(a, left, right) == old(findMin(a, left, right));
-    ensures findMax(a, left, right) == old(findMax(a, left, right));
-    
-    // Something wrong with this line
-    // Check Termination Section on how to terminate properly
-    // http://rise4fun.com/Dafny/tutorial
+    ensures a[left] == findMin(a, left, right);
+    //ensures a[right] == findMax(a,left,right);
+    //ensures findMin(a, left, right) == old(findMin(a, left, right));
+    //ensures findMax(a, left, right) == old(max(a, left, right));
+
     decreases right - left;
 {
     if (a[left] > a[right]) {
@@ -118,22 +126,22 @@ forall k > right, a[k] == old(a[k])
 //     }
 // }
 
-// method min (a: array<int>) returns (max: nat)
+// method findMin1 (a: array<int>) returns (min: int)
 //     requires a != null && a.Length > 0;
-//     ensures forall j:: 0<=j<a.Length ==> a[j] <= max;
-//     ensures exists j:: 0<=j<a.Length && a[j]==max;
+//     ensures forall j:: 0<=j<a.Length ==> a[j] <= min;
+//     ensures exists j:: 0<=j<a.Length && a[j]==min;
 // {
-//     max := 0;
+//     min := 0;
 //     var i := 0;
 
 //     while (i < a.Length)
 //         invariant 0 <= i <= a.Length;
-//         invariant forall j:: 0<=j<i ==> a[j] <= max;
-//         invariant i!=0 ==> exists j:: 0<=j<i && a[j]==max;
-//         invariant i==0 ==> a[0] >= max;
+//         invariant forall j:: 0<=j<i ==> a[j] <= min;
+//         invariant i!=0 ==> exists j:: 0<=j<i && a[j]==min;
+//         invariant i==0 ==> a[0] >= min;
 //     {
-//         if (a[i] > max) {
-//             max := a[i]; 
+//         if (a[i] > min) {
+//             min := a[i]; 
 //         }
 //         i := i + 1;
 //     }

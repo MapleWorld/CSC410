@@ -75,8 +75,6 @@ requires a + findFinalIndex(a,b) * b == pick(findFinalIndex(a,b));
     var z := findFinalIndex(a, b);
     while a + i * b != pick (i)
     invariant z >= i;
-    //invariant (a + b) >= findXYSum(i); 
-    //decreases ((a + b) - findXYSum(i)), findY(i); 
     decreases z - i; 
     { 
         i := i + 1; 
@@ -84,19 +82,4 @@ requires a + findFinalIndex(a,b) * b == pick(findFinalIndex(a,b));
 }
 
 
-
-
-
-// Testing methods
-function method findXYSum(i: nat): nat
-{
-    var (x, y) := unpair (i);
-    x + y
-}
-
-function method findY(i: nat): nat
-{
-    var (x, y) := unpair (i);
-    y
-}
 
