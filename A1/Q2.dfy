@@ -49,6 +49,7 @@ method stoogeSort(a: array <int>, left: int, right: int)
     requires 0 <= findMax(a, left, right) < a.Length;
     
     //ensures sorted(a, left, right);
+    ensures a[left] <= a[right];
     ensures a[left] == a[findMin(a, left, right)];
     //ensures a[right] == a[findMax(a, left, right)];
     // ensures findMin(a, left, right) == old(findMin(a, left, right));
