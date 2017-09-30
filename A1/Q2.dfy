@@ -53,7 +53,7 @@ method stoogeSort(a: array <int>, left: int, right: int)
         Making sure that whenever spawing happens
         Only because it found an element that is smaller/bigger than previous ones
         a[left] <= a[right] wouldn't work witout it
-        As we might spaw a[left] or a[right] again during the recursive call 
+        As we might swap a[left] or a[right] again during the recursive call 
     -*/
     ensures a[left] <= old(a[left]);
     ensures a[left] <= old(a[right]);
@@ -61,11 +61,15 @@ method stoogeSort(a: array <int>, left: int, right: int)
     ensures a[right] >= old(a[left]);
     ensures a[left] <= a[right];
 
+    ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
     ensures a[left] == a[findMin(a, left, right)];
-    //ensures a[right] == a[findMax(a, left, right)];
+    ensures a[findMin(a, left, right)] <= old(a[left]);
+    ensures a[left] <= a[findMax(a, left, right)];
+    ensures a[findMax(a, left, right)] >= old(a[right]);
+
     //ensures findMin(a, left, right) == old(findMin(a, left, right));
     //ensures findMax(a, left, right) == old(findMax(a, left, right));
-    ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
+    
     decreases right - left;
 {
     if (a[left] > a[right]) {
@@ -78,9 +82,16 @@ method stoogeSort(a: array <int>, left: int, right: int)
         return;
     }
     var k := (right - left + 1) / 3;
+    // stoogeSort(a, left, right - k); // First two-thirds
+    // stoogeSort(a, left + k, right); // Last two-thirds
+    // stoogeSort(a, left, right - k); // First two-thirds again
+    
     stoogeSort(a, left, right - k); // First two-thirds
+    assert a[left] == a[findMin(a, left, right - k)];
     stoogeSort(a, left + k, right); // Last two-thirds
+    assert a[left+k] == a[findMin(a, left+k, right)];
     stoogeSort(a, left, right - k); // First two-thirds again
+    assert a[left] == a[findMin(a, left, right-k)];
 }
 
 // Find the bigger one, a[left] or a[right]
