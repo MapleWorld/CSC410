@@ -75,8 +75,8 @@ method stoogeSort(a: array<int>, left: int, right: int)
     //ensures right - left >= 1 ==> a[right-1] <= a[right];
     //ensures forall i :: (left <= i <= right ) ==> a[i] <= a[right];
 
-    //ensures findMin(a, left, right) == old(findMin(a, left, right));
-    //ensures findMax(a, left, right) == old(findMax(a, left, right));
+    ensures a[findMin(a, left, right)] >= old(a[findMin(a, left, right)]);
+    ensures a[findMax(a, left, right)] <= old(a[findMax(a, left, right)]);
     
     decreases  right - left;
 {
