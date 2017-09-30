@@ -55,25 +55,25 @@ method stoogeSort(a: array <int>, left: int, right: int)
         a[left] <= a[right] wouldn't work witout it
         As we might swap a[left] or a[right] again during the recursive call 
     -*/
-    ensures a[left] <= old(a[left]);
-    ensures a[left] <= old(a[right]);
-    ensures a[right] >= old(a[right]);
-    ensures a[right] >= old(a[left]);
+    // ensures left <= right;
+    // ensures a[left] <= old(a[left]);
+    // ensures a[left] <= old(a[right]);
+    // ensures a[right] >= old(a[right]);
+    // ensures a[right] >= old(a[left]);
     ensures a[left] <= a[right];
-    ensures left <= right;
 
     ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
     ensures a[left] == a[findMin(a, left, right)];
     ensures a[right] == a[findMax(a, left, right)];
-    ensures a[left] <= a[findMin(a, left, right)];
-    ensures a[right] >= a[findMax(a, left, right)];
-    ensures a[left] >= old(a[findMin(a, left, right)]);
-    ensures a[right] <= old(a[findMax(a, left, right)]);
+    // ensures a[left] <= a[findMin(a, left, right)];
+    // ensures a[right] >= a[findMax(a, left, right)];
+    // ensures a[left] >= old(a[findMin(a, left, right)]);
+    // ensures a[right] <= old(a[findMax(a, left, right)]);
     ensures a[findMin(a, left, right)] <= old(a[left]);
     ensures a[findMax(a, left, right)] >= old(a[right]);
     ensures a[findMin(a, left, right)] >= old(a[findMin(a, left, right)]);
     ensures a[findMax(a, left, right)] <= old(a[findMax(a, left, right)]);
-    
+
     decreases right - left;
 {
     if (a[left] > a[right]) {
@@ -86,11 +86,6 @@ method stoogeSort(a: array <int>, left: int, right: int)
         return;
 	}
     stoogeSort(a, left, right - 1);
-
-
     stoogeSort(a, left + 1, right);
-
-
     stoogeSort(a, left, right - 1);
-
 }
