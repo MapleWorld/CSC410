@@ -52,6 +52,8 @@ method stoogeSort(a: array <int>, left: int, right: int)
     /*
         Making sure that whenever spawing happens
         Only because it found an element that is smaller/bigger than previous ones
+        a[left] <= a[right] wouldn't work witout it
+        As we might spaw a[left] or a[right] again during the recursive call 
     -*/
     ensures a[left] <= old(a[left]);
     ensures a[left] <= old(a[right]);
