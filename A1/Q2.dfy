@@ -67,10 +67,10 @@ method stoogeSort(a: array <int>, left: int, right: int)
     ensures a[right] == a[findMax(a, left, right)];
     ensures a[left] <= a[findMin(a, left, right)];
     ensures a[right] >= a[findMax(a, left, right)];
-    ensures a[findMin(a, left, right)] <= old(a[left]);
-    ensures a[findMax(a, left, right)] >= old(a[right]);
     ensures a[left] >= old(a[findMin(a, left, right)]);
     ensures a[right] <= old(a[findMax(a, left, right)]);
+    ensures a[findMin(a, left, right)] <= old(a[left]);
+    ensures a[findMax(a, left, right)] >= old(a[right]);
     ensures a[findMin(a, left, right)] >= old(a[findMin(a, left, right)]);
     ensures a[findMax(a, left, right)] <= old(a[findMax(a, left, right)]);
     
