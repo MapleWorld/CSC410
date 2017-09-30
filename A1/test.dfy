@@ -49,21 +49,6 @@ method stoogeSort(a: array <int>, left: int, right: int)
     requires 0 <= findMax(a, left, right) < a.Length;
     
     ensures sorted(a, left, right);
-    /*
-        Making sure that whenever spawing happens
-        Only because it found an element that is smaller/bigger than previous ones
-        a[left] <= a[right] wouldn't work witout it
-        As we might swap a[left] or a[right] again during the recursive call 
-    -*/
-    // ensures left <= right;
-    // ensures a[left] <= old(a[left]);
-    // ensures a[left] <= old(a[right]);
-    // ensures a[right] >= old(a[right]);
-    // ensures a[right] >= old(a[left]);
-    // ensures a[left] <= a[findMin(a, left, right)];
-    // ensures a[right] >= a[findMax(a, left, right)];
-    // ensures a[left] >= old(a[findMin(a, left, right)]);
-    // ensures a[right] <= old(a[findMax(a, left, right)]);
     ensures a[left] <= a[right];
 
     ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
