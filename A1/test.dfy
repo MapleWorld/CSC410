@@ -40,7 +40,7 @@ function method findMin (a: array<int>, left: int, right: int): int
     else left
 }
 
-method stoogeSort(a: array<int>, left: int, right: int)
+method stoogeSort(a: array <int>, left: int, right: int)
     modifies a;
     requires a != null;
     requires a.Length > 0;
@@ -74,7 +74,7 @@ method stoogeSort(a: array<int>, left: int, right: int)
     ensures a[findMin(a, left, right)] >= old(a[findMin(a, left, right)]);
     ensures a[findMax(a, left, right)] <= old(a[findMax(a, left, right)]);
     
-    decreases  right - left;
+    decreases right - left;
 {
     if (a[left] > a[right]) {
         // swap a[left] and a[right]
@@ -82,7 +82,6 @@ method stoogeSort(a: array<int>, left: int, right: int)
         a[left] := a[right];
         a[right] := tmp;
     }
-	
     if (left + 1 >= right) {
         return;
 	}
