@@ -67,8 +67,7 @@ method stoogeSort(a: array<int>, left: int, right: int)
     ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
     decreases right - left;
 {
-    if (a[left] > a[right])
-    {
+    if (a[left] > a[right]) {
         // swap a[left] and a[right]
         var tmp := a[left];
         a[left] := a[right];
