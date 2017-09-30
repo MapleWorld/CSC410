@@ -48,7 +48,7 @@ method stoogeSort(a: array<int>, left: int, right: int)
     requires 0 <= findMin(a, left, right) < a.Length;
     requires 0 <= findMax(a, left, right) < a.Length;
     
-    //ensures sorted(a, left, right);
+    ensures sorted(a, left, right);
     /*
         Making sure that whenever spawing happens
         Only because it found an element that is smaller/bigger than previous ones
@@ -65,16 +65,18 @@ method stoogeSort(a: array<int>, left: int, right: int)
     ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
     ensures a[left] == a[findMin(a, left, right)];
     ensures a[right] == a[findMax(a, left, right)];
+    ensures a[left] <= a[findMin(a, left, right)];
+    ensures a[right] <= a[findMax(a, left, right)];
     ensures a[findMin(a, left, right)] <= old(a[left]);
     ensures a[findMax(a, left, right)] >= old(a[right]);
+    ensures a[left] >= old(a[findMin(a, left, right)]);
+    ensures a[right] <= old(a[findMax(a, left, right)]);
 
     //ensures right - left >= 1 ==> a[right-1] <= a[right];
     //ensures forall i :: (left <= i <= right ) ==> a[i] <= a[right];
 
-    // These two need to work?
     //ensures findMin(a, left, right) == old(findMin(a, left, right));
     //ensures findMax(a, left, right) == old(findMax(a, left, right));
-    
     
     decreases  right - left;
 {
