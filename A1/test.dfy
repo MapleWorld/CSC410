@@ -1,4 +1,3 @@
-
 predicate sorted(a:array<int>, min:int, max:int)
 requires a != null;
 requires 0 <= min <= max < a.Length;
@@ -61,14 +60,19 @@ method stoogeSort(a: array<int>, left: int, right: int)
     ensures a[right] >= old(a[right]);
     ensures a[right] >= old(a[left]);
     ensures a[left] <= a[right];
+    ensures left <= right;
 
-    ensures a[left] == a[findMin(a, left, right)];
-    ensures a[right] == a[findMax(a, left, right)];
-
-    //ensures findMin(a, left, right) == old(findMin(a, left, right));
-    //ensures findMax(a, left, right) == old(findMax(a, left, right));
     ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
-    decreases right - left;
+    ensures a[left] == a[findMin(a, left, right)];
+    ensures a[findMin(a, left, right)] <= old(a[left]);
+    ensures a[left] <= a[findMax(a, left, right)];
+    ensures a[findMax(a, left, right)] >= old(a[right]);
+  // ensures right - left >= 1 ==> a[right-1] <= a[right];
+    //ensures forall i :: (left <= i <= right ) ==> a[i] <= a[right];
+
+    
+    
+    decreases  right - left;
 {
     if (a[left] > a[right]) {
         // swap a[left] and a[right]
@@ -81,6 +85,12 @@ method stoogeSort(a: array<int>, left: int, right: int)
         return;
 	}
     stoogeSort(a, left, right - 1);
+
+
     stoogeSort(a, left + 1, right);
+
+
     stoogeSort(a, left, right - 1);
+
+    
 }
