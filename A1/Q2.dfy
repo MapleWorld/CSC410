@@ -55,7 +55,7 @@ method stoogeSort(a: array <int>, left: int, right: int)
     ensures forall i :: (0 <= i < left || right < i < a.Length) ==> a[i] == old(a[i]);
     ensures a[left] == a[findMin(a, left, right)];
     ensures a[right] == a[findMax(a, left, right)];
-
+    ensures sorted(a,left,right);
     ensures a[findMin(a, left, right)] <= old(a[left]);
     ensures a[findMin(a, left, right)] >= old(a[findMin(a, left, right)]);
     ensures a[findMax(a, left, right)] >= old(a[right]);
