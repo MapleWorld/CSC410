@@ -65,8 +65,10 @@ method stoogeSort(a: array <int>, left: int, right: int)
     // Note: new ensures code is really slow to compile
     ensures a[findMin(a, left, right)] <= a[findMin(a, left + ((right - left + 1) / 3), right)];
     ensures a[findMin(a, left, right)] >= a[findMin(a, left, right - ((right - left + 1) / 3))];
+    ensures a[findMax(a, left, right)] >= a[findMax(a, left + ((right - left + 1) / 3), right)];
+    ensures a[findMax(a, left, right)] <= a[findMax(a, left, right - ((right - left + 1) / 3))];
 
-    ensures a[findMin(a, left + ((right - left + 1) / 3), right)] >= old(a[left]);
+   // ensures a[findMin(a, left + ((right - left + 1) / 3), right)] >= old(a[left]);
     ensures a[findMin(a, left + ((right - left + 1) / 3), right)] >= old(a[findMin(a, left, right)]);
 
     decreases right - left;
