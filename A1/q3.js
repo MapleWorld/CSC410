@@ -7,7 +7,22 @@ function unpair(i) {
 	var z = ((x + y) * (x + y + 1)) / 2 + x;
 	console.log("i = " + i + " x = " + x + " y = " + y + " sum = " + (x + i * y) + " x+y= "+ (x+y) + " z = " + z);
 }
-//while a + i * b != pick (i)
+
+function unpair1(i) {
+    if (i == 0) { 
+        return [0, 0];
+    } else {
+        var [p, q] = unpair1(i - 1); 
+    }
+        
+    if (q > 0) {
+        return [p + 1, q - 1];
+    }  else {
+        return [0, q + 1];
+    }
+}
+
+
 
 function findSum(sum, next, i) {
     if (sum + next <= i) {
@@ -19,7 +34,8 @@ function findSum(sum, next, i) {
 }
 
 for (var t = 0; t < 10; t++) {
-	unpair(t);
+	var gg = unpair1(t);
+    console.log(t + " " + gg);
 }
 //unpair(8);
 /*
