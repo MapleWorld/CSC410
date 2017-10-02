@@ -46,9 +46,26 @@ function reverse(x, y) {
     }
 }
 
+function reverse1(x, y) {
+    if (x == 0 && y == 0) {
+        return 0;
+    } else {
+        if (x > 0 && y >= 0) {
+            return 1 + reverse1(x - 1, y + 1);
+        } else {
+
+            if (x == 0 && y > 0) {
+                return 1 + reverse1(y - 1, x);
+            } else {
+                return 0;
+            }
+        }
+    }
+}
+
 for (var t = 0; t < 10; t++) {
 	var gg = unpair1(t);
-    console.log(t + " " + gg[0] + "," + gg[1] + " " + reverse(gg[0], gg[1]));
+    console.log(t + " " + gg[0] + "," + gg[1] + " " + reverse1(gg[0], gg[1]));
 }
 
 
