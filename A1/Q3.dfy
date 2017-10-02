@@ -72,10 +72,9 @@ requires findFinalIndex(a,b) >= 0;
 requires a + findFinalIndex(a,b) * b == pick(findFinalIndex(a,b));
 {
     var i := 0;
-    var z := findFinalIndex(a, b);
     while a + i * b != pick (i)
-    invariant z >= i;
-    decreases z - i; 
+    invariant findFinalIndex(a, b) >= i;
+    decreases findFinalIndex(a, b) - i; 
     { 
         i := i + 1; 
     }

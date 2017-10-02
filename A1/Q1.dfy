@@ -16,7 +16,7 @@ modifies a;
     invariant 1 <= i <= a.Length;
     invariant sorted(a, 0, i);
     decreases a.Length - i;
-  {
+    {
         var j := i;
         var value := a[i];
         a[i] := a[i - 1];
