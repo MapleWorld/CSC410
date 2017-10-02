@@ -8,6 +8,16 @@ function unpair(i) {
 	console.log("i = " + i + " x = " + x + " y = " + y + " sum = " + (x + i * y) + " x+y= "+ (x+y) + " z = " + z);
 }
 
+function findSum(sum, next, i) {
+    if (sum + next <= i) {
+        return findSum(sum + next, next + 1, i)
+    } else {
+        var result = [sum, next];
+        return result;
+    }
+}
+
+
 function unpair1(i) {
     if (i == 0) { 
         return [0, 0];
@@ -18,20 +28,10 @@ function unpair1(i) {
     if (q > 0) {
         return [p + 1, q - 1];
     }  else {
-        return [0, q + 1];
+        return [q, p + 1];
     }
 }
 
-
-
-function findSum(sum, next, i) {
-    if (sum + next <= i) {
-    	return findSum(sum + next, next + 1, i)
-    } else {
-    	var result = [sum, next];
-    	return result;
-    }
-}
 
 for (var t = 0; t < 10; t++) {
 	var gg = unpair1(t);
