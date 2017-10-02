@@ -32,11 +32,27 @@ function unpair1(i) {
     }
 }
 
+function reverse(x, y) {
+    if (x == 0 && y == 0) {
+        return 0;
+    }
+
+    if (x > 0 && y >= 0) {
+        return 1 + reverse(x - 1, y + 1);
+    }
+
+    if (x == 0 && y > 0) {
+        return 1 + reverse(y - 1, x);
+    }
+}
 
 for (var t = 0; t < 10; t++) {
 	var gg = unpair1(t);
-    console.log(t + " " + gg);
+    console.log(t + " " + gg[0] + "," + gg[1] + " " + reverse(gg[0], gg[1]));
 }
+
+
+
 //unpair(8);
 /*
 		Index	
