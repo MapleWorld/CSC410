@@ -12,18 +12,13 @@ function method pick (i: nat ): nat
     x + i * y
 }
 
-// function method reverse (x: nat, y: nat): nat
-//     decreases x, y
-// {
-//     if (x == 0 && y == 0) then 0 else
-//         if (x > 0 && y >= 0) then 1 + reverse(x - 1, y + 1) else
-//             if (x == 0 && y > 0) then 1 + reverse(y - 1, x) else 
-//                 0
-// }
-
-function method reverse(a: nat , b: nat ): nat
+function method reverse (x: nat, y: nat): nat
+    decreases x + y, x
 {
-    ((a + b) * (a + b + 1)) / 2 + a
+    if (x == 0 && y == 0) then 0 else
+        if (x > 0 && y >= 0) then 1 + reverse(x - 1, y + 1) else
+            if (x == 0 && y > 0) then 1 + reverse(y - 1, x) else 
+                0
 }
 
 lemma check(a: nat , b: nat, i: nat)
