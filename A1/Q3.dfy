@@ -61,7 +61,7 @@ function method findFinalIndex(a: nat , b: nat ): nat
 
 method catchTheSpy (a: nat , b: nat )
 //requires findFinalIndex(a,b) >= 0;
-//requires a + findFinalIndex(a,b) * b == pick(findFinalIndex(a,b));
+requires a +  reverse(a, b) * b == pick(reverse(a, b)); //This condition is here to make the code complie, need lemma to prove this, please see commented out section for lemma existz
 //ensures exists x:: x>=0 &&  a + x * b == pick(x);
 {
     var i := 0;
@@ -70,10 +70,10 @@ method catchTheSpy (a: nat , b: nat )
     decreases reverse(a, b) - i; 
     { 
         i := i + 1; 
-        assert a +  reverse(a, b) * b == pick(reverse(a, b)); //need lemma to implement this, please see commented out section for lemma existz
+        assert a +  reverse(a, b) * b == pick(reverse(a, b)); 
     }
 }
-
+/*
 function method findY(i: nat): nat
 {
     var (x, y) := unpair (i);
@@ -85,3 +85,4 @@ function method findX(i: nat): nat
     var (x, y) := unpair (i);
     x
 }
+*/
