@@ -1,23 +1,3 @@
-function method unpair (i: nat ): (nat, nat)
-requires i >= 0;
-decreases i;
-{ 
-    if (i == 0) then (0, 0) else 
-        var (p, q) := unpair(i - 1); 
-        if (q > 0) then (p + 1, q - 1) else (q, p + 1)
-    //assert unpair(i) == unpair(reverse(unpair(i)));
-}
-
-function method reverse (x: nat, y: nat): nat
-    decreases x+y, x
-
-{
-    if (x == 0 && y == 0) then 0 else
-        if (x > 0 && y >= 0) then 1 + reverse(x - 1, y + 1) else
-            if (x == 0 && y > 0) then 1 + reverse(y - 1, x) else 
-                0
-}
-
 /*
 lemma existz(x: nat, y: nat)
   ensures x +  reverse(x, y) * y == pick(reverse(x, y));
@@ -47,16 +27,30 @@ lemma existz(x: nat, y: nat)
     }
 }
 */
+function method unpair (i: nat ): (nat, nat)
+requires i >= 0;
+decreases i;
+{ 
+    if (i == 0) then (0, 0) else 
+        var (p, q) := unpair(i - 1); 
+        if (q > 0) then (p + 1, q - 1) else (q, p + 1)
+    //assert unpair(i) == unpair(reverse(unpair(i)));
+}
 
+// Calculation method to determine index for cantor pair using reverse engineering
+function method reverse (x: nat, y: nat): nat
+    decreases x+y, x
+
+{
+    if (x == 0 && y == 0) then 0 else
+        if (x > 0 && y >= 0) then 1 + reverse(x - 1, y + 1) else
+            if (x == 0 && y > 0) then 1 + reverse(y - 1, x) else 
+                0
+}
 function method pick (i: nat ): nat
 {
     var (x, y) := unpair (i);
     x + i * y
-}
-
-function method findFinalIndex(a: nat , b: nat ): nat
-{
-    ((a + b) * (a + b + 1)) / 2 + a
 }
 
 method catchTheSpy (a: nat , b: nat )
@@ -72,6 +66,13 @@ requires a +  reverse(a, b) * b == pick(reverse(a, b)); //This condition is here
         i := i + 1; 
         assert a +  reverse(a, b) * b == pick(reverse(a, b)); 
     }
+}
+
+// Testing method below
+// Calculation method for cantor pair
+function method findFinalIndex(a: nat , b: nat ): nat
+{
+    ((a + b) * (a + b + 1)) / 2 + a
 }
 /*
 function method findY(i: nat): nat
