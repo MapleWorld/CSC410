@@ -1,4 +1,4 @@
-file = open("C:\Users\Lonel\Desktop\CSC410\A2\q1_z3_output.txt", "r") 
+file = open("C:\Users\Lonel\Desktop\CSC410\A2\hidato-output.txt", "r") 
 
 list = dict()
 position = None
