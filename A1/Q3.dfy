@@ -39,8 +39,8 @@ decreases i;
 
 // Calculation method to determine index for cantor pair using reverse engineering
 function method reverse (x: nat, y: nat): nat
-    decreases x+y, x
-
+	ensures unpair(reverse(x, y)) == (x, y)
+	decreases x + y, x
 {
     if (x == 0 && y == 0) then 0 else
         if (x > 0 && y >= 0) then 1 + reverse(x - 1, y + 1) else
