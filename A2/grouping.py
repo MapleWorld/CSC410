@@ -39,9 +39,6 @@ def declareVar():
 
 def formulateZ3Code():
     declareVar()
-    allGreaterThan0()
-    checkAllNeighbors()
-    noDuplicate()
     outputFormulaFile.write("(check-sat)\n")
     outputFormulaFile.write("(get-model)\n")
     outputFormulaFile.close()
