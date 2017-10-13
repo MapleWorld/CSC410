@@ -18,22 +18,21 @@ inputFile = open(sys.argv[1], 'r')
 for line in inputFile.readlines():
     inputs.append(line.replace("\n","").split(" "))
 
-rows = len(inputs);
-cols = len(inputs[0]);
+numOfStudent = len(inputs);
+    
+print inputs
     
 def buildVarName(row, col):
-    return "m" + str(row) + str(col)
+    return "b" + str(row) + str(inputs[row][col])
     
 # Declare variables
 def declareVar():
-    for row in range(0, rows):
-        for col in range(0, cols):
-            if (inputs[row][col] == "*"):
-                continue
+    for row in range(0, numOfStudent):
+        for col in range(0, len(inputs[row])):
             map[buildVarName(row, col)] = True;
-            outputFormulaFile.write("(declare-const " + buildVarName(row, col) + " Int)\n")
-            if (inputs[row][col] != "-"):
-                outputFormulaFile.write("(assert (= " + buildVarName(row, col) + " " + inputs[row][col] + "))\n")
+            outputFormulaFile.write("(declare-const " + buildVarName(row, col) + " Boolean)\n")
+            #if (inputs[row][col] != "-"):
+            #    outputFormulaFile.write("(assert (= " + buildVarName(row, col) + " " + inputs[row][col] + "))\n")
                 
             
 
@@ -85,8 +84,8 @@ def executeZ3Code(z3Result):
     outputGroupingFile.close()
 
 formulateZ3Code()
-z3ExecuablePath ='./z3/bin/z3.exe'
-process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
+#z3ExecuablePath ='./z3/bin/z3.exe'
+#process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
 #z3Result, stderr = process.communicate()
 #executeZ3Code(z3Result)
 #process.terminate()
