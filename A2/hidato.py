@@ -106,7 +106,7 @@ def formulateZ3Code():
     noDuplicate()
     outputFormulaFile.write("(check-sat)\n")
     outputFormulaFile.write("(get-model)\n")
-
+    outputFormulaFile.close()
 #executeZ3Code();
 def executeZ3Code(z3Result):
     # Execute the z3 code and fetch the result
@@ -143,13 +143,15 @@ def executeZ3Code(z3Result):
                 line += "* "
         outputMatrixFile.write(line + "\n")
 
-
+    outputMatrixFile.close()
 
 formulateZ3Code()
 z3ExecuablePath ='./z3/bin/z3.exe'
 process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
 z3Result, stderr = process.communicate()
 executeZ3Code(z3Result)
+process.terminate()
+
 
 
 
