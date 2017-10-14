@@ -35,8 +35,7 @@ def buildVarName(a, b):
     
 # Declare variables
 def declareVar():
-    # Need to include case, where a student has no preference
-    
+    outputFormulaFile.write(";; Declaring variables\n")
     for currStudent in range(0, numOfStudent):
         for partner in inputs[currStudent]:
             preferencMap[currStudent].append(buildVarNameAlone(partner))
@@ -48,8 +47,6 @@ def declareVar():
                 if buildVarNameAlone(nextStudent + 1) not in preferencMap[currStudent]:
                     nonpreferenceMap[currStudent].append(buildVarNameAlone(nextStudent + 1))
                     outputFormulaFile.write("(declare-const " + buildVarName(currStudent + 1, nextStudent + 1) + " Int)\n")
-    
-
 
 # Every constant should be positive
 def positiveConstant():
@@ -102,8 +99,6 @@ def maxGroupformed():
         outputFormulaFile.write(line + "\n")
         line = ""
 
-        
-    
 def formulateZ3Code():
     declareVar()
     positiveConstant()
@@ -129,18 +124,18 @@ def executeZ3Code(z3Result):
     # Parse the output 
     for line in z3ResultLines:
         if "(define-fun" in line:
-            position = line.split("(define-fun ")[1].split(" () B")[0]
+            position = line.split("(define-fun ")[1].split(" () Int")[0]
         if "    " in line:
             value = line[4:len(line) - 2]
         if position != None and value != None:
             list[position] = value
             position = None
             value = None
-    
+        
     groupList = []
     numGroupFormed = 0
     for group in list:
-        if list[group] == "true":
+        if list[group] == "1":
             numGroupFormed += 1
             groupList.append(",".join(group.split("b")[1:]));
               
