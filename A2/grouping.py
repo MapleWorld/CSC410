@@ -20,32 +20,40 @@ for line in inputFile.readlines():
 
 numOfStudent = len(inputs);
     
-print inputs
+
+for currStudent in range(0, numOfStudent):
+    map[currStudent] = [];
     
-def buildVarName(row, col):
-    return "b" + str(row) + str(inputs[row][col])
+def buildVarNameAlone(row):
+    return "b" + str(row) 
     
 # Declare variables
 def declareVar():
-    for row in range(0, numOfStudent):
-        for col in range(0, len(inputs[row])):
-            map[buildVarName(row, col)] = True;
-            outputFormulaFile.write("(declare-const " + buildVarName(row, col) + " Boolean)\n")
-            #if (inputs[row][col] != "-"):
-            #    outputFormulaFile.write("(assert (= " + buildVarName(row, col) + " " + inputs[row][col] + "))\n")
-                
-            
+    for currStudent in range(0, numOfStudent):
+        outputFormulaFile.write("(declare-const " + buildVarNameAlone(currStudent + 1) + " Bool)\n")
+        for partner in inputs[currStudent]:
+            map[currStudent].append(buildVarNameAlone(partner))
+               
+# Declare that every student must group with ones of its preference partner
+def oneMustBeGroupWithItsPreferencePartner():
+    outputFormulaFile.write(";;Every student should pair with one of its perferenced student\n")
+    for currStudent in range(0, numOfStudent):
+        line = "(assert (or "
+        for partner in map[currStudent]:
+            line += "(and " + buildVarNameAlone(currStudent + 1) + " " + str(partner) + ") "
+        line +="))"
+        outputFormulaFile.write(line + "\n")
+        line = ""
 
 def formulateZ3Code():
     declareVar()
+    oneMustBeGroupWithItsPreferencePartner()
     outputFormulaFile.write("(check-sat)\n")
     outputFormulaFile.write("(get-model)\n")
     outputFormulaFile.close()
+    print map
     
-    
-    
-    
-#executeZ3Code();
+
 def executeZ3Code(z3Result):
     # Execute the z3 code and fetch the result
     list = dict()
@@ -60,7 +68,7 @@ def executeZ3Code(z3Result):
         outputGroupingFile.write("NO SOLUTION")
         return
 
-    # Parse the output in matrix form
+    # Parse the output 
     for line in z3ResultLines:
         if "(define-fun" in line:
             position = line[14:17]
@@ -71,23 +79,15 @@ def executeZ3Code(z3Result):
             position = None
             value = None
         
-    for row in range(0, rows):
-        line = ""
-        for col in range(0, cols):
-            str1 = "m" + str(row) + str(col)
-            if list.has_key(str1):
-                line += list[str1] + " "
-            else:
-                line += "* "
-        outputGroupingFile.write(line + "\n")
-
+    outputGroupingFile.write("gg" + "\n")
     outputGroupingFile.close()
 
 formulateZ3Code()
-#z3ExecuablePath ='./z3/bin/z3.exe'
-#process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
-#z3Result, stderr = process.communicate()
-#executeZ3Code(z3Result)
+z3ExecuablePath ='./z3/bin/z3.exe'
+process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
+z3Result, stderr = process.communicate()
+print z3Result
+executeZ3Code(z3Result)
 #process.terminate()
 
 
