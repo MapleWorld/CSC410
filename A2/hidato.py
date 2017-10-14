@@ -32,6 +32,7 @@ def buildVarName(row, col):
     
 # Declare variables
 def declareVar():
+    outputFormulaFile.write(";; Declaring variables\n")
     for row in range(0, rows):
         for col in range(0, cols):
             if (inputs[row][col] == "*"):
@@ -44,6 +45,7 @@ def declareVar():
             
 # Ensures all values are greater than 0
 def allGreaterThan0():
+    outputFormulaFile.write(";; Ensures all cell are greater than 0\n")
     str = "(assert (and "
     for row in range(0, rows):
         for col in range(0, cols):
@@ -63,6 +65,7 @@ def checkAllNeighbors():
 
 # Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 def checkNeighbors(x, y):
+    outputFormulaFile.write(";; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods\n")
     if (inputs[x][y] != "-"):
         return
     strPlus = "(assert (or "
@@ -83,6 +86,7 @@ def checkNeighbors(x, y):
 
 # Ensures that there is no duplicate value
 def noDuplicate():
+    outputFormulaFile.write(";; Ensures that there is no duplicate values\n")
     track = dict()
     for row in range(0, rows):
         for col in range(0, cols):
@@ -125,7 +129,7 @@ def executeZ3Code(z3Result):
     # Parse the output in matrix form
     for line in z3ResultLines:
         if "(define-fun" in line:
-            position = line[14:17]
+            position = line.split("(define-fun ")[1].split(" () Int")[0]
         if "    " in line:
             value = line[4:len(line) - 2]
         if position != None and value != None:
@@ -149,6 +153,7 @@ formulateZ3Code()
 z3ExecuablePath ='./z3/bin/z3.exe'
 process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
 z3Result, stderr = process.communicate()
+print z3Result
 executeZ3Code(z3Result)
 process.terminate()
 

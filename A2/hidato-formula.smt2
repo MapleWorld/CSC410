@@ -1,3 +1,4 @@
+;; Declaring variables
 (declare-const m02 Int)
 (assert (= m02 7))
 (declare-const m03 Int)
@@ -49,37 +50,72 @@
 (assert (= m62 25))
 (declare-const m63 Int)
 (declare-const m64 Int)
+;; Ensures all cell are greater than 0
 (assert (and (> m02 0) (> m03 0) (> m04 0) (> m12 0) (> m13 0) (> m14 0) (> m20 0) (> m21 0) (> m22 0) (> m23 0) (> m24 0) (> m25 0) (> m26 0) (> m30 0) (> m31 0) (> m32 0) (> m33 0) (> m34 0) (> m35 0) (> m36 0) (> m40 0) (> m41 0) (> m42 0) (> m43 0) (> m44 0) (> m45 0) (> m46 0) (> m52 0) (> m53 0) (> m54 0) (> m62 0) (> m63 0) (> m64 0) ))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m03 (+ m04 1)) (>= m03 (+ m04 1)))(and (<= m13 (+ m04 1)) (>= m13 (+ m04 1)))(and (<= m14 (+ m04 1)) (>= m14 (+ m04 1)))))
 (assert (or (and (<= m03 (- m04 1)) (>= m03 (- m04 1)))(and (<= m13 (- m04 1)) (>= m13 (- m04 1)))(and (<= m14 (- m04 1)) (>= m14 (- m04 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m02 (+ m13 1)) (>= m02 (+ m13 1)))(and (<= m03 (+ m13 1)) (>= m03 (+ m13 1)))(and (<= m04 (+ m13 1)) (>= m04 (+ m13 1)))(and (<= m12 (+ m13 1)) (>= m12 (+ m13 1)))(and (<= m14 (+ m13 1)) (>= m14 (+ m13 1)))(and (<= m22 (+ m13 1)) (>= m22 (+ m13 1)))(and (<= m23 (+ m13 1)) (>= m23 (+ m13 1)))(and (<= m24 (+ m13 1)) (>= m24 (+ m13 1)))))
 (assert (or (and (<= m02 (- m13 1)) (>= m02 (- m13 1)))(and (<= m03 (- m13 1)) (>= m03 (- m13 1)))(and (<= m04 (- m13 1)) (>= m04 (- m13 1)))(and (<= m12 (- m13 1)) (>= m12 (- m13 1)))(and (<= m14 (- m13 1)) (>= m14 (- m13 1)))(and (<= m22 (- m13 1)) (>= m22 (- m13 1)))(and (<= m23 (- m13 1)) (>= m23 (- m13 1)))(and (<= m24 (- m13 1)) (>= m24 (- m13 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m03 (+ m14 1)) (>= m03 (+ m14 1)))(and (<= m04 (+ m14 1)) (>= m04 (+ m14 1)))(and (<= m13 (+ m14 1)) (>= m13 (+ m14 1)))(and (<= m23 (+ m14 1)) (>= m23 (+ m14 1)))(and (<= m24 (+ m14 1)) (>= m24 (+ m14 1)))(and (<= m25 (+ m14 1)) (>= m25 (+ m14 1)))))
 (assert (or (and (<= m03 (- m14 1)) (>= m03 (- m14 1)))(and (<= m04 (- m14 1)) (>= m04 (- m14 1)))(and (<= m13 (- m14 1)) (>= m13 (- m14 1)))(and (<= m23 (- m14 1)) (>= m23 (- m14 1)))(and (<= m24 (- m14 1)) (>= m24 (- m14 1)))(and (<= m25 (- m14 1)) (>= m25 (- m14 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m12 (+ m21 1)) (>= m12 (+ m21 1)))(and (<= m20 (+ m21 1)) (>= m20 (+ m21 1)))(and (<= m22 (+ m21 1)) (>= m22 (+ m21 1)))(and (<= m30 (+ m21 1)) (>= m30 (+ m21 1)))(and (<= m31 (+ m21 1)) (>= m31 (+ m21 1)))(and (<= m32 (+ m21 1)) (>= m32 (+ m21 1)))))
 (assert (or (and (<= m12 (- m21 1)) (>= m12 (- m21 1)))(and (<= m20 (- m21 1)) (>= m20 (- m21 1)))(and (<= m22 (- m21 1)) (>= m22 (- m21 1)))(and (<= m30 (- m21 1)) (>= m30 (- m21 1)))(and (<= m31 (- m21 1)) (>= m31 (- m21 1)))(and (<= m32 (- m21 1)) (>= m32 (- m21 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m12 (+ m22 1)) (>= m12 (+ m22 1)))(and (<= m13 (+ m22 1)) (>= m13 (+ m22 1)))(and (<= m21 (+ m22 1)) (>= m21 (+ m22 1)))(and (<= m23 (+ m22 1)) (>= m23 (+ m22 1)))(and (<= m31 (+ m22 1)) (>= m31 (+ m22 1)))(and (<= m32 (+ m22 1)) (>= m32 (+ m22 1)))(and (<= m33 (+ m22 1)) (>= m33 (+ m22 1)))))
 (assert (or (and (<= m12 (- m22 1)) (>= m12 (- m22 1)))(and (<= m13 (- m22 1)) (>= m13 (- m22 1)))(and (<= m21 (- m22 1)) (>= m21 (- m22 1)))(and (<= m23 (- m22 1)) (>= m23 (- m22 1)))(and (<= m31 (- m22 1)) (>= m31 (- m22 1)))(and (<= m32 (- m22 1)) (>= m32 (- m22 1)))(and (<= m33 (- m22 1)) (>= m33 (- m22 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m13 (+ m24 1)) (>= m13 (+ m24 1)))(and (<= m14 (+ m24 1)) (>= m14 (+ m24 1)))(and (<= m23 (+ m24 1)) (>= m23 (+ m24 1)))(and (<= m25 (+ m24 1)) (>= m25 (+ m24 1)))(and (<= m33 (+ m24 1)) (>= m33 (+ m24 1)))(and (<= m34 (+ m24 1)) (>= m34 (+ m24 1)))(and (<= m35 (+ m24 1)) (>= m35 (+ m24 1)))))
 (assert (or (and (<= m13 (- m24 1)) (>= m13 (- m24 1)))(and (<= m14 (- m24 1)) (>= m14 (- m24 1)))(and (<= m23 (- m24 1)) (>= m23 (- m24 1)))(and (<= m25 (- m24 1)) (>= m25 (- m24 1)))(and (<= m33 (- m24 1)) (>= m33 (- m24 1)))(and (<= m34 (- m24 1)) (>= m34 (- m24 1)))(and (<= m35 (- m24 1)) (>= m35 (- m24 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m14 (+ m25 1)) (>= m14 (+ m25 1)))(and (<= m24 (+ m25 1)) (>= m24 (+ m25 1)))(and (<= m26 (+ m25 1)) (>= m26 (+ m25 1)))(and (<= m34 (+ m25 1)) (>= m34 (+ m25 1)))(and (<= m35 (+ m25 1)) (>= m35 (+ m25 1)))(and (<= m36 (+ m25 1)) (>= m36 (+ m25 1)))))
 (assert (or (and (<= m14 (- m25 1)) (>= m14 (- m25 1)))(and (<= m24 (- m25 1)) (>= m24 (- m25 1)))(and (<= m26 (- m25 1)) (>= m26 (- m25 1)))(and (<= m34 (- m25 1)) (>= m34 (- m25 1)))(and (<= m35 (- m25 1)) (>= m35 (- m25 1)))(and (<= m36 (- m25 1)) (>= m36 (- m25 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m20 (+ m30 1)) (>= m20 (+ m30 1)))(and (<= m21 (+ m30 1)) (>= m21 (+ m30 1)))(and (<= m31 (+ m30 1)) (>= m31 (+ m30 1)))(and (<= m40 (+ m30 1)) (>= m40 (+ m30 1)))(and (<= m41 (+ m30 1)) (>= m41 (+ m30 1)))))
 (assert (or (and (<= m20 (- m30 1)) (>= m20 (- m30 1)))(and (<= m21 (- m30 1)) (>= m21 (- m30 1)))(and (<= m31 (- m30 1)) (>= m31 (- m30 1)))(and (<= m40 (- m30 1)) (>= m40 (- m30 1)))(and (<= m41 (- m30 1)) (>= m41 (- m30 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m25 (+ m36 1)) (>= m25 (+ m36 1)))(and (<= m26 (+ m36 1)) (>= m26 (+ m36 1)))(and (<= m35 (+ m36 1)) (>= m35 (+ m36 1)))(and (<= m45 (+ m36 1)) (>= m45 (+ m36 1)))(and (<= m46 (+ m36 1)) (>= m46 (+ m36 1)))))
 (assert (or (and (<= m25 (- m36 1)) (>= m25 (- m36 1)))(and (<= m26 (- m36 1)) (>= m26 (- m36 1)))(and (<= m35 (- m36 1)) (>= m35 (- m36 1)))(and (<= m45 (- m36 1)) (>= m45 (- m36 1)))(and (<= m46 (- m36 1)) (>= m46 (- m36 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m33 (+ m44 1)) (>= m33 (+ m44 1)))(and (<= m34 (+ m44 1)) (>= m34 (+ m44 1)))(and (<= m35 (+ m44 1)) (>= m35 (+ m44 1)))(and (<= m43 (+ m44 1)) (>= m43 (+ m44 1)))(and (<= m45 (+ m44 1)) (>= m45 (+ m44 1)))(and (<= m53 (+ m44 1)) (>= m53 (+ m44 1)))(and (<= m54 (+ m44 1)) (>= m54 (+ m44 1)))))
 (assert (or (and (<= m33 (- m44 1)) (>= m33 (- m44 1)))(and (<= m34 (- m44 1)) (>= m34 (- m44 1)))(and (<= m35 (- m44 1)) (>= m35 (- m44 1)))(and (<= m43 (- m44 1)) (>= m43 (- m44 1)))(and (<= m45 (- m44 1)) (>= m45 (- m44 1)))(and (<= m53 (- m44 1)) (>= m53 (- m44 1)))(and (<= m54 (- m44 1)) (>= m54 (- m44 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m34 (+ m45 1)) (>= m34 (+ m45 1)))(and (<= m35 (+ m45 1)) (>= m35 (+ m45 1)))(and (<= m36 (+ m45 1)) (>= m36 (+ m45 1)))(and (<= m44 (+ m45 1)) (>= m44 (+ m45 1)))(and (<= m46 (+ m45 1)) (>= m46 (+ m45 1)))(and (<= m54 (+ m45 1)) (>= m54 (+ m45 1)))))
 (assert (or (and (<= m34 (- m45 1)) (>= m34 (- m45 1)))(and (<= m35 (- m45 1)) (>= m35 (- m45 1)))(and (<= m36 (- m45 1)) (>= m36 (- m45 1)))(and (<= m44 (- m45 1)) (>= m44 (- m45 1)))(and (<= m46 (- m45 1)) (>= m46 (- m45 1)))(and (<= m54 (- m45 1)) (>= m54 (- m45 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m35 (+ m46 1)) (>= m35 (+ m46 1)))(and (<= m36 (+ m46 1)) (>= m36 (+ m46 1)))(and (<= m45 (+ m46 1)) (>= m45 (+ m46 1)))))
 (assert (or (and (<= m35 (- m46 1)) (>= m35 (- m46 1)))(and (<= m36 (- m46 1)) (>= m36 (- m46 1)))(and (<= m45 (- m46 1)) (>= m45 (- m46 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m41 (+ m52 1)) (>= m41 (+ m52 1)))(and (<= m42 (+ m52 1)) (>= m42 (+ m52 1)))(and (<= m43 (+ m52 1)) (>= m43 (+ m52 1)))(and (<= m53 (+ m52 1)) (>= m53 (+ m52 1)))(and (<= m62 (+ m52 1)) (>= m62 (+ m52 1)))(and (<= m63 (+ m52 1)) (>= m63 (+ m52 1)))))
 (assert (or (and (<= m41 (- m52 1)) (>= m41 (- m52 1)))(and (<= m42 (- m52 1)) (>= m42 (- m52 1)))(and (<= m43 (- m52 1)) (>= m43 (- m52 1)))(and (<= m53 (- m52 1)) (>= m53 (- m52 1)))(and (<= m62 (- m52 1)) (>= m62 (- m52 1)))(and (<= m63 (- m52 1)) (>= m63 (- m52 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m52 (+ m63 1)) (>= m52 (+ m63 1)))(and (<= m53 (+ m63 1)) (>= m53 (+ m63 1)))(and (<= m54 (+ m63 1)) (>= m54 (+ m63 1)))(and (<= m62 (+ m63 1)) (>= m62 (+ m63 1)))(and (<= m64 (+ m63 1)) (>= m64 (+ m63 1)))))
 (assert (or (and (<= m52 (- m63 1)) (>= m52 (- m63 1)))(and (<= m53 (- m63 1)) (>= m53 (- m63 1)))(and (<= m54 (- m63 1)) (>= m54 (- m63 1)))(and (<= m62 (- m63 1)) (>= m62 (- m63 1)))(and (<= m64 (- m63 1)) (>= m64 (- m63 1)))))
+;; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
 (assert (or (and (<= m53 (+ m64 1)) (>= m53 (+ m64 1)))(and (<= m54 (+ m64 1)) (>= m54 (+ m64 1)))(and (<= m63 (+ m64 1)) (>= m63 (+ m64 1)))))
 (assert (or (and (<= m53 (- m64 1)) (>= m53 (- m64 1)))(and (<= m54 (- m64 1)) (>= m54 (- m64 1)))(and (<= m63 (- m64 1)) (>= m63 (- m64 1)))))
+;; Ensures that there is no duplicate values
 (assert (and (not (= m02 m46))(not (= m02 m13))(not (= m02 m12))(not (= m02 m14))(not (= m02 m45))(not (= m02 m44))(not (= m02 m54))(not (= m02 m53))(not (= m02 m52))(not (= m02 m36))(not (= m02 m35))(not (= m02 m34))(not (= m02 m33))(not (= m02 m32))(not (= m02 m31))(not (= m02 m30))(not (= m02 m04))(not (= m02 m03))(not (= m02 m62))(not (= m02 m63))(not (= m02 m64))(not (= m02 m24))(not (= m02 m25))(not (= m02 m40))(not (= m02 m41))(not (= m02 m20))(not (= m02 m21))(not (= m02 m22))(not (= m02 m23))(not (= m02 m42))(not (= m02 m43))(not (= m02 m26))))
 (assert (and (not (= m03 m46))(not (= m03 m13))(not (= m03 m12))(not (= m03 m14))(not (= m03 m45))(not (= m03 m44))(not (= m03 m54))(not (= m03 m53))(not (= m03 m52))(not (= m03 m36))(not (= m03 m35))(not (= m03 m34))(not (= m03 m33))(not (= m03 m32))(not (= m03 m31))(not (= m03 m30))(not (= m03 m04))(not (= m03 m62))(not (= m03 m63))(not (= m03 m64))(not (= m03 m24))(not (= m03 m25))(not (= m03 m40))(not (= m03 m41))(not (= m03 m20))(not (= m03 m21))(not (= m03 m22))(not (= m03 m23))(not (= m03 m42))(not (= m03 m43))(not (= m03 m26))))
 (assert (and (not (= m04 m46))(not (= m04 m13))(not (= m04 m12))(not (= m04 m14))(not (= m04 m45))(not (= m04 m44))(not (= m04 m54))(not (= m04 m53))(not (= m04 m52))(not (= m04 m36))(not (= m04 m35))(not (= m04 m34))(not (= m04 m33))(not (= m04 m32))(not (= m04 m31))(not (= m04 m30))(not (= m04 m62))(not (= m04 m63))(not (= m04 m64))(not (= m04 m24))(not (= m04 m25))(not (= m04 m40))(not (= m04 m41))(not (= m04 m20))(not (= m04 m21))(not (= m04 m22))(not (= m04 m23))(not (= m04 m42))(not (= m04 m43))(not (= m04 m26))))
