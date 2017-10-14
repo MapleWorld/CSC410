@@ -59,17 +59,15 @@ def noDuplicateBetweenGroup():
     for currStudent in range(0, numOfStudent):
         dupStudent = []
         for c in range(0, numOfStudent): 
-            if ((currStudent != c) and currStudent in map[c]):
-                dupStudent.append(c)
+            if ((currStudent != c) and currStudent + 1 in map[c]):
+                dupStudent.append(c+1)
         dupVar = []
         for c in map[currStudent]:
-            dupVar.append(buildVarName(currStudent + 1, c[1:]))
+            dupVar.append(buildVarName(currStudent+1, c))
         for c in dupStudent:
-            dupVar.append(buildVarName(c, currStudent + 1))
+            dupVar.append(buildVarName(c, currStudent+1))
             
         dup[currStudent] = itertools.combinations(dupVar,2)
-        
-        
 
         for c in dup[currStudent]:
             if not(c[0][1] == c[1][3] and c[0][3] == c[1][1]):
@@ -124,28 +122,3 @@ z3Result, stderr = process.communicate()
 print z3Result
 executeZ3Code(z3Result)
 #process.terminate()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
