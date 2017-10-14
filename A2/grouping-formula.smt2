@@ -1,3 +1,4 @@
+;; Declaring variables
 (declare-const b1b2 Bool)
 (declare-const b1b3 Bool)
 (declare-const b1b4 Bool)
@@ -286,10 +287,10 @@
 (assert (not (and b4b3 b4b5)))
 (assert (not (and b4b3 b2b3)))
 ;; Make sure the remaining student pairs up
-(assert (or b1b2 b1b3 b1b4 b1b5 b2b1 b3b1 b4b1 b5b1 ))
-(assert (or b1b2 b2b1 b2b3 b2b4 b2b5 b3b2 b4b2 b5b2 ))
-(assert (or b1b3 b2b3 b3b1 b3b2 b3b4 b3b5 b4b3 b5b3 ))
-(assert (or b1b4 b2b4 b3b4 b4b1 b4b2 b4b3 b4b5 b5b4 ))
-(assert (or b1b5 b2b5 b3b5 b4b5 b5b1 b5b2 b5b3 b5b4 ))
+(assert-soft (or b1b2 b1b3 b1b4 b1b5 b2b1 b3b1 b4b1 b5b1 ))
+(assert-soft (or b1b2 b2b1 b2b3 b2b4 b2b5 b3b2 b4b2 b5b2 ))
+(assert-soft (or b1b3 b2b3 b3b1 b3b2 b3b4 b3b5 b4b3 b5b3 ))
+(assert-soft (or b1b4 b2b4 b3b4 b4b1 b4b2 b4b3 b4b5 b5b4 ))
+(assert-soft (or b1b5 b2b5 b3b5 b4b5 b5b1 b5b2 b5b3 b5b4 ))
 (check-sat)
 (get-model)
