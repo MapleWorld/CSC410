@@ -71,10 +71,9 @@ def noDuplicateBetweenGroup():
         dup[currStudent] = itertools.combinations(dupVar,2)
 
         for c in dup[currStudent]:
-            if not(c[0][1] == c[1][3] and c[0][3] == c[1][1]):
-                line = "(assert (not (and  " + c[0] + " " + c[1] + ")))"
-                outputFormulaFile.write(line + "\n")
-                line = ""                
+            line = "(assert (not (and " + c[0] + " " + c[1] + ")))"
+            outputFormulaFile.write(line + "\n")
+            line = ""                
     
     
 def formulateZ3Code():
@@ -105,15 +104,25 @@ def executeZ3Code(z3Result):
     # Parse the output 
     for line in z3ResultLines:
         if "(define-fun" in line:
-            position = line[14:17]
+            position = line.split("(define-fun ")[1].split(" () B")[0]
         if "    " in line:
             value = line[4:len(line) - 2]
         if position != None and value != None:
             list[position] = value
             position = None
             value = None
+    
+    groupList = []
+    numGroupFormed = 0
+    for group in list:
+        if list[group] == "true":
+            numGroupFormed += 1
+            groupList.append(",".join(group.split("b")[1:]));
+              
+    outputGroupingFile.write(str(numGroupFormed) + " groups formed:\n")
+    for group in groupList:
+        outputGroupingFile.write(group + "\n")
         
-    outputGroupingFile.write("gg" + "\n")
     outputGroupingFile.close()
 
 formulateZ3Code()
@@ -122,4 +131,4 @@ process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PI
 z3Result, stderr = process.communicate()
 print z3Result
 executeZ3Code(z3Result)
-#process.terminate()
+process.terminate()
