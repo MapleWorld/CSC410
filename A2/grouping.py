@@ -32,6 +32,7 @@ def buildVarName(a, b):
     
 # Declare variables
 def declareVar():
+    # Need to include case, where a student has no preference
     for currStudent in range(0, numOfStudent):
         for partner in inputs[currStudent]:
             map[currStudent].append(buildVarNameAlone(partner))
