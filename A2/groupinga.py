@@ -64,6 +64,7 @@ def oneMustBeGroupWithItsPreferencePartner():
 
 # There can't be duplicate between groups
 def noDuplicateBetweenGroup():
+    '''
     dup = dict()
     outputFormulaFile.write(";; There shouldn't be duplicate between group\n")
     for currStudent in range(0, numOfStudent):
@@ -83,7 +84,21 @@ def noDuplicateBetweenGroup():
         for c in dup[currStudent]:
             line = "(assert (not (and " + c[0] + " " + c[1] + ")))"
             outputFormulaFile.write(line + "\n")
-            line = ""                
+            line = ""       
+    '''
+    for studA in range(0, numOfStudent):
+        line = "(assert (or "
+        for studB in range(0, numOfStudent):
+            for studC in range(0, numOfStudent):
+                if studB != studC:
+                    if studA == studB or studA == studC:
+                       line += buildVarName(studB + 1, studC + 1) + " " 
+            
+        line += "))"
+        print line
+        
+          
+                     
 
 # Ensure that the remaining student will pair up into group
 def pairRemainingStudents():
@@ -147,8 +162,8 @@ def executeZ3Code(z3Result):
 
 formulateZ3Code()
 z3ExecuablePath ='./z3/bin/z3.exe'
-process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
-z3Result, stderr = process.communicate()
-print z3Result
-executeZ3Code(z3Result)
-process.terminate()
+#process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
+#z3Result, stderr = process.communicate()
+#print z3Result
+#executeZ3Code(z3Result)
+#process.terminate()

@@ -1,4 +1,1 @@
-3 groups formed:
-3,2
-5,1
-1,4
+0 groups formed:
