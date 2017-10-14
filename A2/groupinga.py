@@ -8,8 +8,8 @@ if len(sys.argv) < 2:
     sys.exit('Usage: %s <problem size>' % sys.argv[0])
     
 # Output file
-#outputFormulaFileName = "grouping-formula.smt2"
-#outputFormulaFile = open(outputFormulaFileName, 'w')
+outputFormulaFileName = "grouping-formula.smt2"
+outputFormulaFile = open(outputFormulaFileName, 'w')
 
 preferencMap = dict()
 nonpreferenceMap = dict()
@@ -23,7 +23,6 @@ for line in inputFile.readlines():
 
 numOfStudent = len(inputs);
     
-
 for currStudent in range(0, numOfStudent):
     preferencMap[currStudent] = [];
     nonpreferenceMap[currStudent] = [];
@@ -37,12 +36,20 @@ def buildVarName(a, b):
 # Declare variables
 def declareVar():
     # Need to include case, where a student has no preference
+    
     for currStudent in range(0, numOfStudent):
         for partner in inputs[currStudent]:
             preferencMap[currStudent].append(buildVarNameAlone(partner))
             outputFormulaFile.write("(declare-const " + buildVarName(currStudent + 1, partner) + " Bool)\n")
+        
+        for nextStudent in range(0, numOfStudent): 
+            if currStudent != nextStudent:
+                # Make sure it is not declared already
+                if buildVarNameAlone(nextStudent + 1) not in preferencMap[currStudent]:
+                    nonpreferenceMap[currStudent].append(buildVarNameAlone(nextStudent + 1))
+                    outputFormulaFile.write("(declare-const " + buildVarName(currStudent + 1, nextStudent + 1) + " Bool)\n")
+    
 
-               
 # Declare that every student must group with ones of its preference partner
 def oneMustBeGroupWithItsPreferencePartner():
     outputFormulaFile.write(";; Every student should pair with one of its perferenced student\n")
@@ -77,17 +84,32 @@ def noDuplicateBetweenGroup():
             line = "(assert (not (and " + c[0] + " " + c[1] + ")))"
             outputFormulaFile.write(line + "\n")
             line = ""                
-    
+
+# Ensure that the remaining student will pair up into group
+def pairRemainingStudents():
+    outputFormulaFile.write(";; Make sure the remaining student pairs up\n")
+    for studA in range(0, numOfStudent):
+        line = "(assert (or "
+        for studB in range(0, numOfStudent):
+            for studC in range(0, numOfStudent):
+                if studB != studC:
+                    if studA == studB or studA == studC:
+                        line += buildVarName(studB + 1, studC + 1) + " "
+            
+        line += "))"
+        outputFormulaFile.write(line + "\n")
+        
     
 def formulateZ3Code():
     declareVar()
     oneMustBeGroupWithItsPreferencePartner()
     noDuplicateBetweenGroup()
+    pairRemainingStudents()
     outputFormulaFile.write("(check-sat)\n")
     outputFormulaFile.write("(get-model)\n")
     outputFormulaFile.close()
-    print "Map ",
     print preferencMap
+    print nonpreferenceMap
     
 
 def executeZ3Code(z3Result):
@@ -123,7 +145,7 @@ def executeZ3Code(z3Result):
         
     outputGroupingFile.close()
 
-#formulateZ3Code()
+formulateZ3Code()
 z3ExecuablePath ='./z3/bin/z3.exe'
 process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
 z3Result, stderr = process.communicate()
