@@ -113,7 +113,9 @@ def formulateZ3Code():
     outputFormulaFile.write("(check-sat)\n")
     outputFormulaFile.write("(get-model)\n")
     outputFormulaFile.close()
-    
+    print preferencMap
+    print nonpreferenceMap
+     
 def executeZ3Code(z3Result):
     # Execute the z3 code and fetch the result
     list = dict()

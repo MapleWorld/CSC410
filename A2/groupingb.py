@@ -19,7 +19,11 @@ inputs = []
 inputFile = open(sys.argv[1], 'r')
 
 for line in inputFile.readlines():
-    inputs.append(line.replace("\n","").split(" "))
+    elements = line.replace("\n","").split(" ")
+    if elements != ['']:
+        inputs.append(elements)
+    else:
+        inputs.append([])
 
 numOfStudent = len(inputs);
     
