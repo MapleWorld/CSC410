@@ -59,15 +59,15 @@ def noDuplicateBetweenGroup():
     for currStudent in range(0, numOfStudent):
         dupStudent = []
         for c in range(0, numOfStudent): 
-            if ((curStudent != c) and curStudent in map[c]):
+            if ((currStudent != c) and currStudent in map[c]):
                 dupStudent.append(c)
         dupVar = []
         for c in map[currStudent]:
             dupVar.append(buildVarName(currStudent, c))
         for c in dupStudent:
             dupVar.append(buildVarName(c, currStudent))
-        dup[currentStudent] = [itertools.combinations(dupVar,2)]
-        for c in dup[currentStudent]:
+        dup[currStudent] = [itertools.combinations(dupVar,2)]
+        for c in dup[currStudent]:
             if not(c[0][1] == c[1][3] and c[0][3] == c[1][1]):
                 line = "(assert (not (and  " + c[0] + " " + c[1] + ")))"
                 outputFormulaFile.write(line + "\n")

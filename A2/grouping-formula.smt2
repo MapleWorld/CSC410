@@ -14,5 +14,4 @@
 (assert-soft (or b3b2 b3b1 ))
 (assert-soft (or b4b1 ))
 (assert-soft (or b5b2 ))
-(check-sat)
-(get-model)
+;; There shouldn't be duplicate between group
