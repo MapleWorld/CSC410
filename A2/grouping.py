@@ -24,8 +24,11 @@ numOfStudent = len(inputs);
 for currStudent in range(0, numOfStudent):
     map[currStudent] = [];
     
-def buildVarNameAlone(row):
-    return "b" + str(row) 
+def buildVarNameAlone(a):
+    return "b" + str(a) 
+    
+def buildVarName(a, b):
+    return "b" + str(a) + "b" + str(b) 
     
 # Declare variables
 def declareVar():
@@ -33,21 +36,31 @@ def declareVar():
         outputFormulaFile.write("(declare-const " + buildVarNameAlone(currStudent + 1) + " Bool)\n")
         for partner in inputs[currStudent]:
             map[currStudent].append(buildVarNameAlone(partner))
+            outputFormulaFile.write("(declare-const " + buildVarName(currStudent + 1, partner) + " Bool)\n")
+
                
 # Declare that every student must group with ones of its preference partner
 def oneMustBeGroupWithItsPreferencePartner():
-    outputFormulaFile.write(";;Every student should pair with one of its perferenced student\n")
+    outputFormulaFile.write(";; Every student should pair with one of its perferenced student\n")
     for currStudent in range(0, numOfStudent):
-        line = "(assert (or "
+        line = "(assert-soft (or " 
         for partner in map[currStudent]:
-            line += "(and " + buildVarNameAlone(currStudent + 1) + " " + str(partner) + ") "
+            line += buildVarNameAlone(currStudent + 1) + partner + " " 
         line +="))"
         outputFormulaFile.write(line + "\n")
         line = ""
 
+
+# There can't be duplicate between groups
+def noDuplicateBetweenGroup():
+    print "Test"
+    
+    
+    
 def formulateZ3Code():
     declareVar()
     oneMustBeGroupWithItsPreferencePartner()
+    noDuplicateBetweenGroup()
     outputFormulaFile.write("(check-sat)\n")
     outputFormulaFile.write("(get-model)\n")
     outputFormulaFile.close()
