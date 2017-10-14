@@ -63,11 +63,13 @@ def noDuplicateBetweenGroup():
                 dupStudent.append(c)
         dupVar = []
         for c in map[currStudent]:
-            dupVar.append(buildVarName(currStudent, c))
+            dupVar.append(buildVarName(currStudent + 1, c[1:]))
         for c in dupStudent:
-            dupVar.append(buildVarName(c, currStudent))
+            dupVar.append(buildVarName(c, currStudent + 1))
             
         dup[currStudent] = itertools.combinations(dupVar,2)
+        
+        
 
         for c in dup[currStudent]:
             if not(c[0][1] == c[1][3] and c[0][3] == c[1][1]):
