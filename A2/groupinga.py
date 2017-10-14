@@ -8,10 +8,12 @@ if len(sys.argv) < 2:
     sys.exit('Usage: %s <problem size>' % sys.argv[0])
     
 # Output file
-outputFormulaFileName = "grouping-formula.smt2"
-outputFormulaFile = open(outputFormulaFileName, 'w')
+#outputFormulaFileName = "grouping-formula.smt2"
+#outputFormulaFile = open(outputFormulaFileName, 'w')
 
-map = dict()
+preferencMap = dict()
+nonpreferenceMap = dict()
+
 inputs = []
 
 inputFile = open(sys.argv[1], 'r')
@@ -23,7 +25,8 @@ numOfStudent = len(inputs);
     
 
 for currStudent in range(0, numOfStudent):
-    map[currStudent] = [];
+    preferencMap[currStudent] = [];
+    nonpreferenceMap[currStudent] = [];
     
 def buildVarNameAlone(a):
     return "b" + str(a) 
@@ -36,7 +39,7 @@ def declareVar():
     # Need to include case, where a student has no preference
     for currStudent in range(0, numOfStudent):
         for partner in inputs[currStudent]:
-            map[currStudent].append(buildVarNameAlone(partner))
+            preferencMap[currStudent].append(buildVarNameAlone(partner))
             outputFormulaFile.write("(declare-const " + buildVarName(currStudent + 1, partner) + " Bool)\n")
 
                
@@ -45,7 +48,7 @@ def oneMustBeGroupWithItsPreferencePartner():
     outputFormulaFile.write(";; Every student should pair with one of its perferenced student\n")
     for currStudent in range(0, numOfStudent):
         line = "(assert-soft (or " 
-        for partner in map[currStudent]:
+        for partner in preferencMap[currStudent]:
             line += buildVarNameAlone(currStudent + 1) + partner + " " 
         line +="))"
         outputFormulaFile.write(line + "\n")
@@ -59,11 +62,11 @@ def noDuplicateBetweenGroup():
     for currStudent in range(0, numOfStudent):
         dupStudent = []
         for c in range(0, numOfStudent): 
-            if ((currStudent != c) and buildVarNameAlone(currStudent + 1) in map[c]):
+            if ((currStudent != c) and buildVarNameAlone(currStudent + 1) in preferencMap[c]):
                 dupStudent.append(c)
                 
         dupVar = []
-        for c in map[currStudent]:
+        for c in preferencMap[currStudent]:
             dupVar.append(buildVarName(currStudent+1, c[1:]))
         for c in dupStudent:
             dupVar.append(buildVarName(c + 1, currStudent+1))
@@ -84,7 +87,7 @@ def formulateZ3Code():
     outputFormulaFile.write("(get-model)\n")
     outputFormulaFile.close()
     print "Map ",
-    print map
+    print preferencMap
     
 
 def executeZ3Code(z3Result):
@@ -95,11 +98,6 @@ def executeZ3Code(z3Result):
     outputGroupingFileName = "grouping-output.txt"
     outputGroupingFile = open(outputGroupingFileName, 'w')
     z3ResultLines = z3Result.split("\n")
-    
-    # Check if there is no solution
-    if "unsat" in z3ResultLines[0]:
-        outputGroupingFile.write("NO SOLUTION")
-        return
 
     # Parse the output 
     for line in z3ResultLines:
@@ -125,7 +123,7 @@ def executeZ3Code(z3Result):
         
     outputGroupingFile.close()
 
-formulateZ3Code()
+#formulateZ3Code()
 z3ExecuablePath ='./z3/bin/z3.exe'
 process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
 z3Result, stderr = process.communicate()
