@@ -15,3 +15,12 @@
 (assert-soft (or b4b1 ))
 (assert-soft (or b5b2 ))
 ;; There shouldn't be duplicate between group
+(assert (not (and  b0bb2 b0bb3)))
+(assert (not (and  b0bb2 b0bb4)))
+(assert (not (and  b0bb3 b0bb4)))
+(assert (not (and  b1bb1 b1bb3)))
+(assert (not (and  b1bb1 b1bb5)))
+(assert (not (and  b1bb3 b1bb5)))
+(assert (not (and  b2bb2 b2bb1)))
+(check-sat)
+(get-model)
