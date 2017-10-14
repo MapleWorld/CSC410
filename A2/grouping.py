@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import itertools
 from subprocess import Popen, PIPE
 
 if len(sys.argv) < 2:
@@ -53,7 +54,24 @@ def oneMustBeGroupWithItsPreferencePartner():
 
 # There can't be duplicate between groups
 def noDuplicateBetweenGroup():
-    print "Test"
+    dup = dict()
+    outputFormulaFile.write(";; There shouldn't be duplicate between group\n")
+    for currStudent in range(0, numOfStudent):
+        dupStudent = []
+        for c in range(0, numOfStudent): 
+            if ((curStudent != c) and curStudent in map[c]):
+                dupStudent.append(c)
+        dupVar = []
+        for c in map[currStudent]:
+            dupVar.append(buildVarName(currStudent, c))
+        for c in dupStudent:
+            dupVar.append(buildVarName(c, currStudent))
+        dup[currentStudent] = [itertools.combinations(dupVar,2)]
+        for c in dup[currentStudent]:
+            if not(c[0][1] == c[1][3] and c[0][3] == c[1][1]):
+                line = "(assert (not (and  " + c[0] + " " + c[1] + ")))"
+                outputFormulaFile.write(line + "\n")
+                line = ""                
     
     
     
