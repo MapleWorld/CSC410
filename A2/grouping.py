@@ -59,13 +59,14 @@ def noDuplicateBetweenGroup():
     for currStudent in range(0, numOfStudent):
         dupStudent = []
         for c in range(0, numOfStudent): 
-            if ((currStudent != c) and currStudent + 1 in map[c]):
-                dupStudent.append(c+1)
+            if ((currStudent != c) and buildVarNameAlone(currStudent + 1) in map[c]):
+                dupStudent.append(c)
+                
         dupVar = []
         for c in map[currStudent]:
             dupVar.append(buildVarName(currStudent+1, c[1:]))
         for c in dupStudent:
-            dupVar.append(buildVarName(c, currStudent+1))
+            dupVar.append(buildVarName(c + 1, currStudent+1))
             
         dup[currStudent] = itertools.combinations(dupVar,2)
 
@@ -76,7 +77,6 @@ def noDuplicateBetweenGroup():
                 line = ""                
     
     
-    
 def formulateZ3Code():
     declareVar()
     oneMustBeGroupWithItsPreferencePartner()
@@ -84,6 +84,7 @@ def formulateZ3Code():
     outputFormulaFile.write("(check-sat)\n")
     outputFormulaFile.write("(get-model)\n")
     outputFormulaFile.close()
+    print "Map ",
     print map
     
 
