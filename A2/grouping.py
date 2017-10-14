@@ -63,7 +63,7 @@ def noDuplicateBetweenGroup():
                 dupStudent.append(c+1)
         dupVar = []
         for c in map[currStudent]:
-            dupVar.append(buildVarName(currStudent+1, c))
+            dupVar.append(buildVarName(currStudent+1, c[1:]))
         for c in dupStudent:
             dupVar.append(buildVarName(c, currStudent+1))
             
