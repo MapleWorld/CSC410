@@ -33,7 +33,6 @@ def buildVarName(a, b):
 # Declare variables
 def declareVar():
     for currStudent in range(0, numOfStudent):
-        outputFormulaFile.write("(declare-const " + buildVarNameAlone(currStudent + 1) + " Bool)\n")
         for partner in inputs[currStudent]:
             map[currStudent].append(buildVarNameAlone(partner))
             outputFormulaFile.write("(declare-const " + buildVarName(currStudent + 1, partner) + " Bool)\n")
