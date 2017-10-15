@@ -61,6 +61,7 @@ def oneMustBeGroupWithItsPreferencePartner():
             line = "(assert-soft (or " 
             for partner in preferencMap[currStudent]:
                 line += buildVarNameAlone(currStudent + 1) + partner + " " 
+                line += partner + buildVarNameAlone(currStudent + 1) + " " 
             line +="))"
             outputFormulaFile.write(line + "\n")
             line = ""
