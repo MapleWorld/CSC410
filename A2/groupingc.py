@@ -79,7 +79,7 @@ def noDuplicateBetweenGroup():
             if studA != studB:
                 line = "(assert (or " 
                 line += "(< " + buildVarNameAlone(studA + 1) + " " + buildVarNameAlone(studB + 1) + ")" 
-                line += "(> " + buildVarNameAlone(studB + 1) + " " + buildVarNameAlone(studA + 1) + ")" 
+                line += "(< " + buildVarNameAlone(studB + 1) + " " + buildVarNameAlone(studA + 1) + ")" 
                 line +="))"
                 outputFormulaFile.write(line + "\n")
                 line = ""
@@ -89,6 +89,22 @@ def studentsInTheSameGroup():
     outputFormulaFile.write(";; Ensures each student is in the same group\n")
     for studA in range(0, numOfStudent):
         line = "(assert (or (= " + buildVarNameAlone(studA + 1) + " " + str(studA + 1) + ")" 
+        for studB in range(0, numOfStudent):
+            if studA != studB:
+                line += "(and "
+                line += "(= " + buildVarNameAlone(studA + 1) + " " + str(studB + 1) + ")" 
+                line += "(= " + buildVarNameAlone(studB + 1) + " " + str(studA + 1) + ")" 
+                line += ")"
+        line +="))"
+        outputFormulaFile.write(line + "\n")
+        line = ""
+        
+
+# Ensures max group formed
+def maxGroupformed():
+    outputFormulaFile.write(";; Ensures each student is in the same group\n")
+    for studA in range(0, numOfStudent):
+        line = "(assert-soft (or "
         for studB in range(0, numOfStudent):
             if studA != studB:
                 line += "(and "
@@ -112,6 +128,8 @@ def formulateZ3Code():
     noDuplicateBetweenGroup()
     outputFormulaFile.write("\n")
     studentsInTheSameGroup()
+    outputFormulaFile.write("\n")
+    maxGroupformed()
     outputFormulaFile.write("\n")
     outputFormulaFile.write("(check-sat)\n")
     outputFormulaFile.write("(get-model)\n")
