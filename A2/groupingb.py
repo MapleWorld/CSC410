@@ -130,8 +130,8 @@ def executeZ3Code(z3Result):
     for line in z3ResultLines:
         if "(define-fun" in line:
             position = line.split("(define-fun ")[1].split(" () Int")[0]
-        if "    " in line:
-            value = line[4:len(line) - 2]
+        elif ")" in line:
+            value = line.split(")")[0].strip()
         if position != None and value != None:
             list[position] = value
             position = None
