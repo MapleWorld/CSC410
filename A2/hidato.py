@@ -55,17 +55,17 @@ def allGreaterThan0():
     str += "))\n"
     outputFormulaFile.write(str)
 
-
+# Ensure there exist some value bigger & smaller than current value by one in the neihborhoods
 def checkAllNeighbors():
+    outputFormulaFile.write(";; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods\n")
     for row in range(0, rows):
         for col in range(0, cols):
             if (inputs[row][col] == "*"):
                 continue
             checkNeighbors(row, col)
 
-# Ensure there exist some value bigger/smaller than current value by one in the neihborhoods
+# Ensure there exist some value bigger & smaller than current value by one in the neihborhoods
 def checkNeighbors(x, y):
-    outputFormulaFile.write(";; Ensure there exist some value bigger/smaller than current value by one in the neihborhoods\n")
     if (inputs[x][y] != "-"):
         return
     strPlus = "(assert (or "
