@@ -85,8 +85,6 @@ def checkNeighbors(x, y):
                     strBiggest += "(> " + current + " " + neighbor + ")"
                     strSmallest += "(< " + current + " " + neighbor + ")"
         
-
-    
     strBiggest += ")"
     strSmallest += ")"
     
