@@ -78,15 +78,14 @@ def checkNeighbors(x, y):
             if (inputs[newX][newY] != "*"):
                 current = buildVarName(x,y)
                 neighbor = buildVarName(newX,newY)
+                strPlus += "(and (<= " + neighbor + " (+ " + current + " 1)) (>= " + neighbor + " (+ " + current + " 1)))"
+                strMinus += "(and (<= " + neighbor + " (- " + current + " 1)) (>= " + neighbor + " (- " + current + " 1)))"
                 if (inputs[x][y] != "-"):
                     # Ensures that the number could be the smallest or the biggest value in the matrix
                     strBiggest += "(> " + current + " " + neighbor + ")"
                     strSmallest += "(< " + current + " " + neighbor + ")"
-                    strPlus += "(and (<= " + neighbor + " (+ " + current + " 1)) (>= " + neighbor + " (+ " + current + " 1)))"
-                    strMinus += "(and (<= " + neighbor + " (- " + current + " 1)) (>= " + neighbor + " (- " + current + " 1)))"
-                else:
-                    strPlus += "(and (<= " + neighbor + " (+ " + current + " 1)) (>= " + neighbor + " (+ " + current + " 1)))"
-                    strMinus += "(and (<= " + neighbor + " (- " + current + " 1)) (>= " + neighbor + " (- " + current + " 1)))"
+        
+
     
     strBiggest += ")"
     strSmallest += ")"
