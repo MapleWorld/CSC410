@@ -8,6 +8,10 @@ py_compile.compile("hidato.py")
 py_compile.compile("groupinga.py")
 py_compile.compile("groupingb.py")
 
+os.remove("hidato")
+os.remove("groupinga")
+os.remove("groupingb")
+
 os.rename("hidato.pyc", "hidato")
 os.rename("groupinga.pyc", "groupinga")
 os.rename("groupingb.pyc", "groupingb")

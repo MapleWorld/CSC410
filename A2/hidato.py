@@ -145,7 +145,6 @@ def executeZ3Code(z3Result):
         outputMatrixFile.write("NO SOLUTION")
         return
 
-    print z3ResultLines
     # Parse the output in matrix form
     for line in z3ResultLines:
         if "(define-fun" in line:
