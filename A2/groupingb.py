@@ -132,6 +132,7 @@ def executeZ3Code(z3Result):
             position = line.split("(define-fun ")[1].split(" () Int")[0]
         elif ")" in line:
             value = line.split(")")[0].strip()
+            
         if position != None and value != None:
             list[position] = value
             position = None
@@ -156,7 +157,6 @@ z3ExecuablePath = '/u/csc410h/fall/pub/z3/bin/z3'
 start_time = time.time()
 process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
 z3Result, stderr = process.communicate()
-print("--- %s seconds ---" % (time.time() - start_time))
+#print("--- %s seconds ---" % (time.time() - start_time))
 #print z3Result
 executeZ3Code(z3Result)
-#process.terminate()
