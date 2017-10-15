@@ -170,19 +170,13 @@ def executeZ3Code(z3Result):
 formulateZ3Code()
 #z3ExecuablePath = './z3/bin/z3.exe'
 z3ExecuablePath = '/u/csc410h/fall/pub/z3/bin/z3'
+start_time = time.time()
 process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
 z3Result, stderr = process.communicate()
+print("--- %s seconds ---" % (time.time() - start_time))
 #print z3Result
 executeZ3Code(z3Result)
 #process.terminate()
-
-
-
-
-
-
-
-
 
 
 
