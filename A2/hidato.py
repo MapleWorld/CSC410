@@ -66,10 +66,11 @@ def checkAllNeighbors():
 
 # Ensure there exist some value bigger & smaller than current value by one in the neihborhoods
 def checkNeighbors(x, y):
-    if (inputs[x][y] != "-"):
-        return
     strPlus = "(assert (or "
     strMinus = "(assert (or "
+    strBiggest = "(and "
+    strSmallest = "(and "
+    
     for coordinate in neighbors:
         newX = x + coordinate[0]
         newY = y + coordinate[1]
@@ -77,12 +78,32 @@ def checkNeighbors(x, y):
             if (inputs[newX][newY] != "*"):
                 current = buildVarName(x,y)
                 neighbor = buildVarName(newX,newY)
-                strPlus += "(and (<= " + neighbor + " (+ " + current + " 1)) (>= " + neighbor + " (+ " + current + " 1)))"
-                strMinus += "(and (<= " + neighbor + " (- " + current + " 1)) (>= " + neighbor + " (- " + current + " 1)))"
-    strPlus +="))\n"
-    strMinus +="))\n"
-    outputFormulaFile.write(strPlus)
-    outputFormulaFile.write(strMinus)
+                if (inputs[x][y] != "-"):
+                    # Ensures that the number could be the smallest or the biggest value in the matrix
+                    strBiggest += "(> " + current + " " + neighbor + ")"
+                    strSmallest += "(< " + current + " " + neighbor + ")"
+                    strPlus += "(and (<= " + neighbor + " (+ " + current + " 1)) (>= " + neighbor + " (+ " + current + " 1)))"
+                    strMinus += "(and (<= " + neighbor + " (- " + current + " 1)) (>= " + neighbor + " (- " + current + " 1)))"
+                else:
+                    strPlus += "(and (<= " + neighbor + " (+ " + current + " 1)) (>= " + neighbor + " (+ " + current + " 1)))"
+                    strMinus += "(and (<= " + neighbor + " (- " + current + " 1)) (>= " + neighbor + " (- " + current + " 1)))"
+    
+    strBiggest += ")"
+    strSmallest += ")"
+    
+    if strBiggest == "(and )":
+        strBiggest =""
+       
+    if strSmallest == "(and )":
+        strSmallest =""
+       
+    if strPlus != "(assert (or ":
+        strPlus +=  strBiggest + "))"
+        outputFormulaFile.write(strPlus + "\n")
+    
+    if strMinus != "(assert (or ":
+        strMinus += strSmallest + "))"
+        outputFormulaFile.write(strMinus + "\n")
 
 # Ensures that there is no duplicate value
 def noDuplicate():

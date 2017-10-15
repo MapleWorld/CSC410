@@ -1,3 +1,5 @@
-2 groups formed:
-1,2
-3,4
+4 groups formed:
+7,6
+2,4
+5,3
+1,8
