@@ -168,7 +168,8 @@ def executeZ3Code(z3Result):
     outputMatrixFile.close()
 
 formulateZ3Code()
-z3ExecuablePath ='./z3/bin/z3.exe'
+#z3ExecuablePath = './z3/bin/z3.exe'
+z3ExecuablePath = '/u/csc410h/fall/pub/z3/bin/z3'
 process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
 z3Result, stderr = process.communicate()
 print z3Result

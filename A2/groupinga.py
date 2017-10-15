@@ -152,7 +152,8 @@ def executeZ3Code(z3Result):
     outputGroupingFile.close()
 
 formulateZ3Code()
-z3ExecuablePath ='./z3/bin/z3.exe'
+#z3ExecuablePath = './z3/bin/z3.exe'
+z3ExecuablePath = '/u/csc410h/fall/pub/z3/bin/z3'
 start_time = time.time()
 process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
 z3Result, stderr = process.communicate()
