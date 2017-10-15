@@ -42,80 +42,97 @@ def buildVarName(a, b):
 def declareVar():
     outputFormulaFile.write(";; Declaring variables\n")
     for currStudent in range(0, numOfStudent):
+        outputFormulaFile.write("(declare-const " + buildVarNameAlone(currStudent + 1) + " Int)\n")
         for partner in inputs[currStudent]:
-            preferencMap[currStudent].append(buildVarNameAlone(partner))
-            outputFormulaFile.write("(declare-const " + buildVarName(currStudent + 1, partner) + " Int)\n")
-        
-        for nextStudent in range(0, numOfStudent): 
-            if currStudent != nextStudent:
-                # Make sure it is not declared already
-                if buildVarNameAlone(nextStudent + 1) not in preferencMap[currStudent]:
-                    nonpreferenceMap[currStudent].append(buildVarNameAlone(nextStudent + 1))
-                    outputFormulaFile.write("(declare-const " + buildVarName(currStudent + 1, nextStudent + 1) + " Int)\n")
+            preferencMap[currStudent].append(partner)
 
-# Every constant should be positive
-def positiveConstant():
-    outputFormulaFile.write(";; Every group should either have indicator zero or one\n")
+# Declare that every student must group with ones of its preference partner
+def oneMustBeGroupWithItsPreferencePartner():
+    outputFormulaFile.write(";; Every student should pair with one of its perferenced student\n")
     for currStudent in range(0, numOfStudent):
-        line = "(assert (and " 
-        for partner in range(0, numOfStudent):
-            if partner != currStudent:
-                line += "(>= " + buildVarName(currStudent + 1, partner+1) + " 0)"
-                line += "(>= " + buildVarName( partner+ 1, currStudent + 1) + " 0)"
+        if len(preferencMap[currStudent]) != 0:
+            line = "(assert-soft (or " 
+            for partner in preferencMap[currStudent]:
+                line += "(= " + buildVarNameAlone(currStudent + 1) + " " + partner + ")"  
+            line +="))"
+            outputFormulaFile.write(line + "\n")
+            line = ""
+            
+# Ensure that the remaining student will pair up into group
+def pairRemainingStudents():
+    outputFormulaFile.write(";; Ensures the remaining student pairs up\n")
+    for studA in range(0, numOfStudent):
+        line = "(assert (or "
+        for studB in range(0, numOfStudent):
+            line += "(= " + buildVarNameAlone(studA + 1)  + " " + str(studB + 1) + ")"
+        line += "))"
+        
+        if line != "(assert-soft (or ))":
+            outputFormulaFile.write(line + "\n")
+
+# Ensure there are no duplicate between groups
+def noDuplicateBetweenGroup():
+    outputFormulaFile.write(";; Ensure there are no duplicate between groups\n")
+    for studA in range(0, numOfStudent):
+        line = "(assert (or " 
+        for studB in range(0, numOfStudent):
+            if studA != studB:
+                line = "(assert (or " 
+                line += "(< " + buildVarNameAlone(studA + 1) + " " + buildVarNameAlone(studB + 1) + ")" 
+                line += "(< " + buildVarNameAlone(studB + 1) + " " + buildVarNameAlone(studA + 1) + ")" 
+                line +="))"
+                outputFormulaFile.write(line + "\n")
+                line = ""
+                
+# Ensures each student is in the same group
+def studentsInTheSameGroup():
+    outputFormulaFile.write(";; Ensures each student is in the same group\n")
+    for studA in range(0, numOfStudent):
+        line = "(assert (or (= " + buildVarNameAlone(studA + 1) + " " + str(studA + 1) + ")" 
+        for studB in range(0, numOfStudent):
+            if studA != studB:
+                line += "(and "
+                line += "(= " + buildVarNameAlone(studA + 1) + " " + str(studB + 1) + ")" 
+                line += "(= " + buildVarNameAlone(studB + 1) + " " + str(studA + 1) + ")" 
+                line += ")"
         line +="))"
         outputFormulaFile.write(line + "\n")
         line = ""
         
-        
-# Each Student must belong to one group only
-def oneGroupOnly():
-    outputFormulaFile.write(";; Each Student must belong to one group only\n")
-    for currStudent in range(0, numOfStudent):
-        line = "(assert (<= (+" 
-        for partner in range(0, numOfStudent):
-            if partner != currStudent:
-                line += " " + buildVarName(currStudent + 1, partner + 1) + " " + buildVarName(partner + 1, currStudent + 1)
-        line +=") 1))"
-        outputFormulaFile.write(line + "\n")
-        line = ""
-        
-  
-# Maximize the group preference
-def maxPreference():
-    outputFormulaFile.write(";; Maximize the group preference\n")
-    line = "(maximize (+ " 
-    for currStudent in range(0, numOfStudent):
-        if len(preferencMap[currStudent]) != 0:
-            for partner in preferencMap[currStudent]:
-                line += buildVarNameAlone(currStudent + 1) + partner + " " + partner + buildVarNameAlone(currStudent +1) + " "
-    line +="))"
-    outputFormulaFile.write(line + "\n")
-    line = ""
 
-# Maximize the number of groups formed
+# Ensures max group formed
 def maxGroupformed():
-    outputFormulaFile.write(";; Maximize the number of groups formed\n")
-    for currStudent in range(0, numOfStudent):
-        line = "(maximize (+" 
-        for partner in range(0, numOfStudent):
-            if partner != currStudent:
-                line += " " + buildVarName(currStudent + 1, partner + 1) + " " + buildVarName(partner + 1, currStudent + 1)
+    outputFormulaFile.write(";; Ensures each student is in the same group\n")
+    for studA in range(0, numOfStudent):
+        line = "(assert-soft (or "
+        for studB in range(0, numOfStudent):
+            if studA != studB:
+                line += "(and "
+                line += "(= " + buildVarNameAlone(studA + 1) + " " + str(studB + 1) + ")" 
+                line += "(= " + buildVarNameAlone(studB + 1) + " " + str(studA + 1) + ")" 
+                line += ")"
         line +="))"
         outputFormulaFile.write(line + "\n")
         line = ""
 
 def formulateZ3Code():
     declareVar()
-    positiveConstant()
-    oneGroupOnly()
-    maxPreference()
+    outputFormulaFile.write("\n")
+    oneMustBeGroupWithItsPreferencePartner()
+    outputFormulaFile.write("\n")
+    pairRemainingStudents()
+    outputFormulaFile.write("\n")
+    noDuplicateBetweenGroup()
+    outputFormulaFile.write("\n")
+    studentsInTheSameGroup()
+    outputFormulaFile.write("\n")
     maxGroupformed()
+    outputFormulaFile.write("\n")
     outputFormulaFile.write("(check-sat)\n")
     outputFormulaFile.write("(get-model)\n")
     outputFormulaFile.close()
     #print preferencMap
     #print nonpreferenceMap
-    
 
 def executeZ3Code(z3Result):
     # Execute the z3 code and fetch the result
@@ -125,12 +142,13 @@ def executeZ3Code(z3Result):
     outputGroupingFileName = "grouping-output.txt"
     outputGroupingFile = open(outputGroupingFileName, 'w')
     z3ResultLines = z3Result.split("\n")
-
+    start = False
     # Parse the output 
     for line in z3ResultLines:
         if "(define-fun" in line:
+            start = True
             position = line.split("(define-fun ")[1].split(" () Int")[0]
-        elif ")" in line:
+        elif ")" in line and start == True:
             value = line.split(")")[0].strip()
             
         if position != None and value != None:
@@ -138,17 +156,22 @@ def executeZ3Code(z3Result):
             position = None
             value = None
         
-    groupList = []
+    uniqueGroups = dict()
     numGroupFormed = 0
     for group in list:
-        if list[group] == "1":
+        studentNum = group.split("b")[1:]
+        if studentNum[0] != list[group]:
             numGroupFormed += 1
-            groupList.append(",".join(group.split("b")[1:]));
-              
+            tempList = [studentNum[0], list[group]]
+            tempList.sort()
+            newStr = ",".join(tempList)
+            uniqueGroups[newStr] = True;
+            
+    numGroupFormed = numGroupFormed / 2
     outputGroupingFile.write(str(numGroupFormed) + " groups formed:\n")
-    for group in groupList:
+    
+    for group in uniqueGroups:
         outputGroupingFile.write(group + "\n")
-        
     outputGroupingFile.close()
 
 formulateZ3Code()
