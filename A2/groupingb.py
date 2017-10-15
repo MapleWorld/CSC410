@@ -159,4 +159,4 @@ z3Result, stderr = process.communicate()
 print("--- %s seconds ---" % (time.time() - start_time))
 #print z3Result
 executeZ3Code(z3Result)
-process.terminate()
+#process.terminate()
