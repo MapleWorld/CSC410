@@ -87,7 +87,7 @@ def maxPreference():
     for currStudent in range(0, numOfStudent):
         if len(preferencMap[currStudent]) != 0:
             for partner in preferencMap[currStudent]:
-                line += buildVarNameAlone(currStudent + 1) + partner + " " + buildVarName(partner, currStudent +1) + " "
+                line += buildVarNameAlone(currStudent + 1) + partner + " " + partner + buildVarNameAlone(currStudent +1) + " "
     line +="))"
     outputFormulaFile.write(line + "\n")
     line = ""
@@ -113,8 +113,8 @@ def formulateZ3Code():
     outputFormulaFile.write("(check-sat)\n")
     outputFormulaFile.write("(get-model)\n")
     outputFormulaFile.close()
-    print preferencMap
-    print nonpreferenceMap
+    #print preferencMap
+    #print nonpreferenceMap
     
 
 def executeZ3Code(z3Result):
@@ -156,6 +156,6 @@ start_time = time.time()
 process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
 z3Result, stderr = process.communicate()
 print("--- %s seconds ---" % (time.time() - start_time))
-print z3Result
+#print z3Result
 executeZ3Code(z3Result)
 process.terminate()

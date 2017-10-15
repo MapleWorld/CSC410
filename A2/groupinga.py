@@ -115,8 +115,8 @@ def formulateZ3Code():
     outputFormulaFile.write("(check-sat)\n")
     outputFormulaFile.write("(get-model)\n")
     outputFormulaFile.close()
-    print preferencMap
-    print nonpreferenceMap
+    #print preferencMap
+    #print nonpreferenceMap
      
 def executeZ3Code(z3Result):
     # Execute the z3 code and fetch the result
@@ -157,6 +157,6 @@ start_time = time.time()
 process = Popen([z3ExecuablePath, outputFormulaFileName], stdout=PIPE, stderr=PIPE)
 z3Result, stderr = process.communicate()
 print("--- %s seconds ---" % (time.time() - start_time))
-print z3Result
+#print z3Result
 executeZ3Code(z3Result)
 process.terminate()
