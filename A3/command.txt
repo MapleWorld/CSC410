@@ -1,0 +1,3 @@
+Upwards exposed: Uses for each definition of a var v, the set of points where v is used.
+
+java -cp soot.jar soot.Main -cp ./out/production/hw3/ -pp -w -f J case2.Test

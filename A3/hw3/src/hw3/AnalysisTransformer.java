@@ -1,4 +1,4 @@
-package csc410.hw3;
+package hw3;
 
 import java.util.*;
 import soot.*;

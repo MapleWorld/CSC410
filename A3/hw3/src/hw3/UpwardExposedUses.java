@@ -1,4 +1,4 @@
-package csc410.hw3;
+package hw3;
 
 import soot.Local;
 import soot.Unit;
@@ -24,7 +24,6 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
 
 		// Second obligation
 		doAnalysis();
-
 	}
 
 	// Override appropriate functions here
@@ -36,7 +35,6 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
 	protected FlowSet<Local> newInitialFlow() {
 		return emptySet.clone();
 	}
-
 
 	// Returns FlowSet representing the initial set of the entry
 	// node. In our case the entry node is the last node and it
