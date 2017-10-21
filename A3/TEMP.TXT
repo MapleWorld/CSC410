@@ -1,0 +1,3 @@
+Upwards exposed uses
+for each definition of a var v, the set of points where v is
+used.
