@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_hw3" default="compile.module.hw3">
+  <dirname property="module.hw3.basedir" file="${ant.file.module_hw3}"/>
+  
+  <property name="module.jdk.home.hw3" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.hw3" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.hw3" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.hw3" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="hw3.output.dir" value="undefined"/>
+  <property name="hw3.testoutput.dir" value="undefined"/>
+  
+  <path id="hw3.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="hw3.module.production.classpath">
+    <path refid="${module.jdk.classpath.hw3}"/>
+  </path>
+  
+  <path id="hw3.runtime.production.module.classpath"/>
+  
+  <path id="hw3.module.classpath">
+    <path refid="${module.jdk.classpath.hw3}"/>
+  </path>
+  
+  <path id="hw3.runtime.module.classpath"/>
+  
+  
+  <patternset id="excluded.from.module.hw3">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.hw3">
+    <patternset refid="excluded.from.module.hw3"/>
+  </patternset>
+  
+  
+  <target name="compile.module.hw3" depends="compile.module.hw3.production,compile.module.hw3.tests" description="Compile module hw3"/>
+  
+  <target name="compile.module.hw3.production" depends="register.custom.compilers" description="Compile module hw3; production classes"/>
+  
+  <target name="compile.module.hw3.tests" depends="register.custom.compilers,compile.module.hw3.production" description="compile module hw3; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.hw3" description="cleanup module">
+    <delete dir="${hw3.output.dir}"/>
+    <delete dir="${hw3.testoutput.dir}"/>
+  </target>
+</project>
