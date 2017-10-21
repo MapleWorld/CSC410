@@ -23,38 +23,5 @@ public class AnalysisTransformer extends SceneTransformer {
 		// Note:: You should print all upward exposed uses to exposed-uses.txt
 		// within the constructor of your class
 		UpwardExposedUses analysis = new UpwardExposedUses(graph);
-
-		/** Edited below **/
-		// Print live variables at the entry and exit of each node
-
-		Iterator<Unit> unitIt = graph.iterator();
-
-		while (unitIt.hasNext()) {
-			Unit s = unitIt.next();
-
-			System.out.print(s);
-
-			int d = 40 - s.toString().length();
-			while (d > 0) {
-				System.out.print(".");
-				d--;
-			}
-
-			FlowSet<Local> set = analysis.getFlowBefore(s);
-
-			System.out.print("\t[entry: ");
-			for (Local local: set) {
-				System.out.print(local+" ");
-			}
-
-			set = analysis.getFlowAfter(s);
-
-			System.out.print("]\t[exit: ");
-			for (Local local: set) {
-				System.out.print(local+" ");
-			}
-			System.out.println("]");
-		}
-
 	}
 }
