@@ -1,5 +1,7 @@
 package hw3;
 
+import org.jboss.util.Null;
+import org.jboss.util.propertyeditor.IntegerEditor;
 import soot.Local;
 import soot.Unit;
 import soot.ValueBox;
@@ -12,6 +14,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /*** Class to hold Upward Exposed Uses analyis. Extend appropriate class. ***/
@@ -38,43 +42,115 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
         String fileName = "./exposed-uses.txt";
         File file = new File(fileName);
         BufferedWriter writer;
+
+        ArrayList<String> lst = new ArrayList();
+        ArrayList<String> codeLst = new ArrayList();
         try {
             writer = new BufferedWriter(new FileWriter(fileName));
 
-            Iterator<Unit> unitIt = g.iterator();
+            printToConsole(g);
+            HashMap<String, ArrayList> blockMap = new HashMap();
 
-            while (unitIt.hasNext()) {
-                Unit s = unitIt.next();
+            for (Unit s : (Iterable<Unit>) g) {
+                //System.out.println(s.getDefBoxes());
+                //System.out.println(s.getUseAndDefBoxes());
 
-                writer.write(s.toString() + "\n");
-                System.out.print(s);
-
-                int d = 40 - s.toString().length();
-                while (d > 0) {
-                    System.out.print(".");
-                    d--;
-                }
-                FlowSet<Local> set = this.getFlowBefore(s);
-
-                System.out.print("\t[entry: ");
-                for (Local local: set) {
-                    System.out.print(local+" ");
+                ArrayList<Local> entry = new ArrayList();
+                for (Local local : this.getFlowBefore(s)) {
+                    entry.add(local);
                 }
 
-                set = this.getFlowAfter(s);
-
-                System.out.print("]\t[exit: ");
-                for (Local local: set) {
-                    System.out.print(local+" ");
+                ArrayList<Local> exit = new ArrayList();
+                for (Local local : this.getFlowAfter(s)) {
+                    exit.add(local);
                 }
-                System.out.println("]");
+
+                ArrayList<ArrayList<Local>> entryExit = new ArrayList();
+                entryExit.add(entry);
+                entryExit.add(exit);
+                System.out.println(s.getDefBoxes());
+
+                if (s.getDefBoxes().size() > 0) {
+                    String name = s.getDefBoxes().get(0).toString();
+                    blockMap.put(name, entryExit);
+                    lst.add(name);
+                    codeLst.add(s.toString());
+                }
             }
+
+            HashMap trackMap = new HashMap();
+
+
+            // Loop the code backward
+            for (int i = lst.size() - 1; i >= 0; i--) {
+                String current = lst.get(i);
+
+                // Find the entry set of the block
+                ArrayList<ArrayList<Local>> blockDataList = blockMap.get(current);
+                ArrayList<Local> blockEntryList = blockDataList.get(0);
+
+                // For each entry set, loop each entry set backward
+                for (int j = blockEntryList.size() - 1; j >= 0; j--) {
+                    Local currentEntryVal = blockEntryList.get(j);
+
+                    // Prevent duplicate
+                    if (!trackMap.containsKey(currentEntryVal.toString())) {
+                        trackMap.put(currentEntryVal.toString(), 1);
+                    } else {
+                        continue;
+                    }
+
+
+                    for (int k = 0; k < i; k++) {
+                        ArrayList<ArrayList<Local>>  tempDataList = blockMap.get(lst.get(k));
+                        ArrayList<Local> tempExitList = tempDataList.get(1);
+                        if (tempExitList.contains(currentEntryVal)) {
+                            writer.write(codeLst.get(k).toString() + "\n");
+                            writer.write(codeLst.get(i).toString() + "\n");
+                            writer.write(currentEntryVal.toString() + "\n");
+                            System.out.println("Write");
+                        }
+                    }
+                    System.out.println("Test: " + currentEntryVal.toString() + " " + j + " " + blockEntryList.toString());
+                }
+
+            }
+
+            System.out.println(lst.toString());
+            System.out.println(blockMap.toString());
             writer.close();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 	}
+
+	private void printToConsole(DirectedGraph g) {
+        for (Unit s : (Iterable<Unit>) g) {
+            System.out.print(s);
+
+            int d = 40 - s.toString().length();
+            while (d > 0) {
+                System.out.print(".");
+                d--;
+            }
+            FlowSet<Local> set = this.getFlowBefore(s);
+
+            System.out.print("\t[entry: ");
+            for (Local local : set) {
+                System.out.print(local + " ");
+            }
+
+            set = this.getFlowAfter(s);
+
+            System.out.print("]\t[exit: ");
+            for (Local local : set) {
+                System.out.print(local + " ");
+            }
+            System.out.println("]");
+        }
+    }
+
 
 	// Override appropriate functions here
 

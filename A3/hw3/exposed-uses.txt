@@ -1,5 +1,9 @@
-r0 := @parameter0: java.lang.String[]
 b0 = 2
+i2 = b1 * b0
+b0
 b1 = 10
 i2 = b1 * b0
-return
+b0
+b1 = 10
+i2 = b1 * b0
+b1
