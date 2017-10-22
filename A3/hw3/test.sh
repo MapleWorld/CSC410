@@ -10,7 +10,7 @@ mkdir -p class
 if javac -cp soot.jar -d class src/*.java; then
 
 	## run test cases
-	if java -cp soot.jar:class csc410.hw3.RunDataFlowAnalysis Test > /dev/null; then
+	if java -cp soot.jar:class csc410.RunDataFlowAnalysis Test > /dev/null; then
 		echo "[>] Your Upward Exposed Uses:"; cat exposed-uses.txt; 
 		echo "[*] Expected Upward Exposed Uses:"; cat test/1/expected-uses.txt;
 	else
@@ -19,3 +19,18 @@ if javac -cp soot.jar -d class src/*.java; then
 else
 	echo "[!] Compilation Error";
 fi;
+
+
+## javac -d test test/*/Test.java ;
+## javac -cp soot.jar -d class ./src/*.java
+## java -cp ../soot.jar:. RunDataFlowAnalysis case2.Test
+
+
+
+
+
+## This doesn't work
+## java -cp soot.jar:class RunDataFlowAnalysis case2.Test
+
+## This works
+## java -cp ../soot.jar:. RunDataFlowAnalysis case2.Test

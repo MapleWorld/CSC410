@@ -1,11 +1,10 @@
-package hw3;
-
 import org.jboss.util.Null;
 import org.jboss.util.propertyeditor.IntegerEditor;
 import soot.Local;
 import soot.Unit;
 import soot.ValueBox;
 import soot.toolkits.graph.DirectedGraph;
+import soot.toolkits.graph.UnitGraph;
 import soot.toolkits.scalar.BackwardFlowAnalysis;
 import soot.toolkits.scalar.FlowSet;
 import soot.toolkits.scalar.ArraySparseSet;
@@ -25,7 +24,8 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
 	// Constructor for class
 	private FlowSet<Local> emptySet;
 
-	public UpwardExposedUses(DirectedGraph g) {
+    @SuppressWarnings("unchecked")
+	public UpwardExposedUses(UnitGraph g) {
 		// First obligation
 		super(g);
 
@@ -43,31 +43,31 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
         File file = new File(fileName);
         BufferedWriter writer;
 
-        ArrayList<String> lst = new ArrayList();
-        ArrayList<String> codeLst = new ArrayList();
+        ArrayList<String> lst = new ArrayList<>();
+        ArrayList<String> codeLst = new ArrayList<>();
         try {
             writer = new BufferedWriter(new FileWriter(fileName));
 
             printToConsole(g);
 
             // Initialize and collect the data needed to write to file
-            HashMap<String, ArrayList> blockMap = new HashMap();
+            HashMap<String, ArrayList<ArrayList<Local>>> blockMap = new HashMap<>();
 
             for (Unit s : (Iterable<Unit>) g) {
                 //System.out.println(s.getDefBoxes());
                 //System.out.println(s.getUseAndDefBoxes());
 
-                ArrayList<Local> entry = new ArrayList();
+                ArrayList<Local> entry = new ArrayList<>();
                 for (Local local : this.getFlowBefore(s)) {
                     entry.add(local);
                 }
 
-                ArrayList<Local> exit = new ArrayList();
+                ArrayList<Local> exit = new ArrayList<>();
                 for (Local local : this.getFlowAfter(s)) {
                     exit.add(local);
                 }
 
-                ArrayList<ArrayList<Local>> entryExit = new ArrayList();
+                ArrayList<ArrayList<Local>> entryExit = new ArrayList<>();
                 entryExit.add(entry);
                 entryExit.add(exit);
                 System.out.println(s.getDefBoxes());
@@ -80,7 +80,7 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
                 }
             }
 
-            HashMap trackMap = new HashMap();
+            HashMap<String, Integer> trackMap = new HashMap<>();
 
             // Find the upward exposed uses of the entry value
             // Loop the code backward
@@ -107,8 +107,8 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
                         ArrayList<ArrayList<Local>>  tempDataList = blockMap.get(lst.get(k));
                         ArrayList<Local> tempExitList = tempDataList.get(1);
                         if (tempExitList.contains(currentEntryVal)) {
-                            writer.write(codeLst.get(k).toString() + "\n");
-                            writer.write(codeLst.get(i).toString() + "\n");
+                            writer.write(codeLst.get(k) + "\n");
+                            writer.write(codeLst.get(i) + "\n");
                             writer.write(currentEntryVal.toString() + "\n");
                             System.out.println("Write");
                         }
@@ -126,8 +126,9 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
         }
 	}
 
-	private void printToConsole(DirectedGraph g) {
-        for (Unit s : (Iterable<Unit>) g) {
+    @SuppressWarnings("unchecked")
+	private void printToConsole(UnitGraph g) {
+        for (Unit s : g) {
             System.out.print(s);
 
             int d = 40 - s.toString().length();
@@ -158,6 +159,7 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
 	// Used to initialize the in and out sets for each node. In
 	// our case we build up the sets as we go, so we initialize
 	// with the empty set.
+    @SuppressWarnings("unchecked")
 	@Override
 	protected FlowSet<Local> newInitialFlow() {
 		return emptySet.clone();
@@ -166,17 +168,19 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
 	// Returns FlowSet representing the initial set of the entry
 	// node. In our case the entry node is the last node and it
 	// should contain the empty set.
+    @SuppressWarnings("unchecked")
 	@Override
 	protected FlowSet<Local> entryInitialFlow() {
 		return emptySet.clone();
 	}
 
+    @SuppressWarnings("unchecked")
 	@Override
 	protected void merge(FlowSet<Local> in1, FlowSet<Local> in2, FlowSet<Local> out) {
 		in1.union(in2, out);
 	}
 
-
+    @SuppressWarnings("unchecked")
 	@Override
 	protected void copy(FlowSet<Local> srcSet, FlowSet<Local> destSet) {
 		srcSet.copy(destSet);
@@ -185,6 +189,7 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
 	// Sets the outSet with the values that flow through the
 	// node from the inSet based on reads/writes at the node
 	// Set the outSet (entry) based on the inSet (exit)
+    @SuppressWarnings("unchecked")
 	@Override
 	protected void flowThrough(FlowSet<Local> inSet,
 							   Unit node, FlowSet<Local> outSet) {
@@ -196,11 +201,11 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
 
         // use == gen = read
         // def == kill = write
-        FlowSet definitions = (FlowSet)emptySet.clone();
+        FlowSet<Local> definitions = (FlowSet) emptySet.clone();
 
         for (ValueBox def: node.getUseAndDefBoxes()) {
             if (def.getValue() instanceof Local) {
-                definitions.add(def.getValue());
+                definitions.add((Local)def.getValue());
             }
         }
         inSet.difference(definitions, outSet);

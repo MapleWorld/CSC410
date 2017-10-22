@@ -1,9 +1,7 @@
-package hw3;
-
 import java.util.*;
+
 import soot.*;
 import soot.toolkits.graph.*;
-import soot.toolkits.scalar.FlowSet;
 
 /*** *** *** YOU DO NOT SUBMIT THIS FILE *** *** ***/
 /*** *** *** PLEASE DON'T EDIT THIS FILE *** *** ***/

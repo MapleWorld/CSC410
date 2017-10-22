@@ -1,5 +1,3 @@
-package hw3;
-
 import soot.*;
 
 /*** *** *** YOU DO NOT SUBMIT THIS FILE *** *** ***/
@@ -9,7 +7,7 @@ public class RunDataFlowAnalysis {
 	public static void main(String[] args) {
 		
 		if (args.length == 0) {
-			System.out.println("Usage: java csc410.hw3.RunDataFlowAnalysis class_to_analyse");
+			System.out.println("Usage: java csc410.RunDataFlowAnalysis class_to_analyse");
 			System.exit(1);
 		} else {
 			System.out.println("Analyzing class: "+args[0]);
