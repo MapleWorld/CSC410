@@ -49,6 +49,8 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
             writer = new BufferedWriter(new FileWriter(fileName));
 
             printToConsole(g);
+
+            // Initialize and collect the data needed to write to file
             HashMap<String, ArrayList> blockMap = new HashMap();
 
             for (Unit s : (Iterable<Unit>) g) {
@@ -80,7 +82,7 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
 
             HashMap trackMap = new HashMap();
 
-
+            // Find the upward exposed uses of the entry value
             // Loop the code backward
             for (int i = lst.size() - 1; i >= 0; i--) {
                 String current = lst.get(i);
@@ -100,7 +102,7 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
                         continue;
                     }
 
-
+                    // Find all line that contains the entry value in their ExitEntrySet
                     for (int k = 0; k < i; k++) {
                         ArrayList<ArrayList<Local>>  tempDataList = blockMap.get(lst.get(k));
                         ArrayList<Local> tempExitList = tempDataList.get(1);
@@ -113,7 +115,6 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
                     }
                     System.out.println("Test: " + currentEntryVal.toString() + " " + j + " " + blockEntryList.toString());
                 }
-
             }
 
             System.out.println(lst.toString());
