@@ -4,7 +4,7 @@ import soot.Local;
 import soot.Unit;
 import soot.ValueBox;
 import soot.jimple.internal.ImmediateBox;
-import soot.toolkits.graph.UnitGraph;
+import soot.toolkits.graph.DirectedGraph;
 import soot.toolkits.scalar.BackwardFlowAnalysis;
 import soot.toolkits.scalar.FlowSet;
 import soot.toolkits.scalar.ArraySparseSet;
@@ -22,7 +22,7 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
 	private FlowSet<Local> emptySet;
 
     @SuppressWarnings("unchecked")
-	public UpwardExposedUses(UnitGraph g) {
+	public UpwardExposedUses(DirectedGraph g) {
 		// First obligation
 		super(g);
 
@@ -42,7 +42,7 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
 
         try {
             writer = new BufferedWriter(new FileWriter(fileName));
-            for (Unit s : g) {
+            for (Unit s : (Iterable<Unit>) g) {
                 List<ValueBox> useBoxes = s.getUseBoxes();
                 if (useBoxes.size() == 1) {
                     ValueBox currentUseBox = useBoxes.get(0);
@@ -67,7 +67,7 @@ public class UpwardExposedUses extends BackwardFlowAnalysis<Unit, FlowSet<Local>
 	}
 
     @SuppressWarnings("unchecked")
-	private void findAllValidPreSucessors(UnitGraph g, Unit s, ValueBox useBox, BufferedWriter writer) throws IOException {
+	private void findAllValidPreSucessors(DirectedGraph g, Unit s, ValueBox useBox, BufferedWriter writer) throws IOException {
         Queue<Unit> queue = new LinkedList<>();
         queue.add(s);
         boolean skippedOnce = false;
