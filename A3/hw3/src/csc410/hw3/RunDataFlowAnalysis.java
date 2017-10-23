@@ -19,8 +19,8 @@ public class RunDataFlowAnalysis {
 
 		// You may have to update the class Path based on your OS and Java version
 		/*** *** YOU MAY EDIT THIS TO ADD THE PATH TO rt.jar (IF NEEDED) WHILE TESTING ON YOUR MACHINE *** ***/
-		//String classPath = "soot.jar:test";
-		String classPath = "C:/Users/Lonel/Desktop/CSC410/A3/hw3/out/production/hw3/";
+		String classPath = "soot.jar:test";
+		//String classPath = "C:/Users/Lonel/Desktop/CSC410/A3/hw3/class";
 
 		//Set up arguments for Soot
 		String[] sootArgs = {
