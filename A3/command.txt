@@ -1,3 +1,11 @@
-Upwards exposed: Uses for each definition of a var v, the set of points where v is used.
+Upwards exposed: 
+Uses for each definition of a var v, the set of points where v is used.
+For each definition of a variable, find all uses that it reaches.
 
-java -cp soot.jar soot.Main -cp ./out/production/hw3/ -pp -w -f J case2.Test
+
+javac -d test test/*/Test.java ;
+javac -cp soot.jar -d class ./src/*.java
+java -cp ../soot.jar:. RunDataFlowAnalysis case2.Test
+
+
+
