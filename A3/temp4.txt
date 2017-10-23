@@ -1,0 +1,38 @@
+Use and Definition
+[JimpleLocalBox(r0), IdentityRefBox(@parameter0: java.lang.String[])]
+[LinkedVariableBox(i0), LinkedRValueBox(0)]
+[LinkedVariableBox(i1), LinkedRValueBox(1)]
+[ImmediateBox(i0), ImmediateBox(10), ConditionExprBox(i0 >= 10)]
+[LinkedVariableBox(i0), LinkedRValueBox(i0 + i1), ImmediateBox(i0), ImmediateBox(i1)]
+[LinkedVariableBox(i1), LinkedRValueBox(i0)]
+[]
+[]
+
+Use 
+[IdentityRefBox(@parameter0: java.lang.String[])]
+[LinkedRValueBox(0)]
+[LinkedRValueBox(1)]
+[ImmediateBox(i0), ImmediateBox(10), ConditionExprBox(i0 >= 10)]
+[LinkedRValueBox(i0 + i1), ImmediateBox(i0), ImmediateBox(i1)]
+[LinkedRValueBox(i0)]
+[]
+[]
+
+Defintion
+[JimpleLocalBox(r0)]
+[LinkedVariableBox(i0)]
+[LinkedVariableBox(i1)]
+[]
+[LinkedVariableBox(i0)]
+[LinkedVariableBox(i1)]
+[]
+[]
+
+r0 := @parameter0: java.lang.String[]...    [entry: ]   [exit: ]
+i0 = 0..................................    [entry: ]   [exit: i0 ]
+i1 = 1..................................    [entry: i0 ]    [exit: i1 i0 ]
+if i0 >= 10 goto return.................    [entry: i1 i0 ] [exit: i0 i1 ]
+i0 = i0 + i1............................    [entry: i0 i1 ] [exit: i0 ]
+i1 = i0.................................    [entry: i0 ]    [exit: i1 i0 ]
+goto [?= (branch)]......................    [entry: i1 i0 ] [exit: i1 i0 ]
+return..................................    [entry: ]   [exit: ]
