@@ -1,7 +1,9 @@
-import java.util.*;
+package csc410.hw3;
 
+import java.util.*;
 import soot.*;
 import soot.toolkits.graph.*;
+import soot.toolkits.scalar.FlowSet;
 
 /*** *** *** YOU DO NOT SUBMIT THIS FILE *** *** ***/
 /*** *** *** PLEASE DON'T EDIT THIS FILE *** *** ***/
@@ -21,5 +23,6 @@ public class AnalysisTransformer extends SceneTransformer {
 		// Note:: You should print all upward exposed uses to exposed-uses.txt
 		// within the constructor of your class
 		UpwardExposedUses analysis = new UpwardExposedUses(graph);
+
 	}
 }
