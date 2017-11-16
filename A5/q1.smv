@@ -1,11 +1,15 @@
-MODULE runner(solider1, time1, solider2, time2, totalTime, torch)
+-- Two soliders wait for torch and cross the bridge, anyone of them can come back
+MODULE runner(solider1, solider2, total_time, torch)
 VAR 
-    location: {waiting};
+    location: {waiting_start, waiting_end, crossing, goingback};
     
 ASSIGN
     init(location) := waiting;
     next(location) := case
-        location = waiting: {waiting, };
+        location = waiting_start: {waiting_start, crossing};
+        location = waiting_end: {waiting_end, goingback};
+        -- if two soilder and torch are both available then cross the bridge
+        location = crossing & solider1 = free & solider2 = free & torch = free: crossing;
 
         fuck
         fuck
@@ -13,12 +17,30 @@ ASSIGN
 
 MODULE main
 VAR
-    time : 0 .. 1000;
+    total_time : 0 .. 1000;
     torch: {free, taken};
-    soliders_time : array 0 .. 3 of {waiting, 5, 10, 20, 25};
-    s1 : process runner(0, soliders_time[0], 1, soilders_time[1], time, torch);
-    s2 : process runner(0, soliders_time[0], 2, soilders_time[2], time, torch);
-    s3 : process runner(0, soliders_time[0], 3, soilders_time[3], time, torch);
-    s4 : process runner(1, soliders_time[1], 2, soilders_time[2], time, torch);
-    s5 : process runner(1, soliders_time[1], 3, soilders_time[3], time, torch);
-    s6 : process runner(2, soliders_time[2], 3, soilders_time[3], time, torch);
+    soliders_time : array 0 .. 3 of {5, 10, 20, 25};
+    soliders_status : array 0 .. 3 of {waiting_start, waiting_end};
+
+    s1 : process runner(soliders_status[0], soliders_status[1], total_time, torch);
+    s2 : process runner(soliders_status[0], soliders_status[2], total_time, torch);
+    s3 : process runner(soliders_status[0], soliders_status[3], total_time, torch);
+
+    s4 : process runner(soliders_status[1], soliders_status[0], total_time, torch);
+    s4 : process runner(soliders_status[1], soliders_status[2], total_time, torch);
+    s5 : process runner(soliders_status[1], soliders_status[3], total_time, torch);
+
+    s6 : process runner(soliders_status[2], soliders_status[0], total_time, torch);
+    s6 : process runner(soliders_status[2], soliders_status[1], total_time, torch);
+    s6 : process runner(soliders_status[2], soliders_status[3], total_time, torch);
+
+    s6 : process runner(soliders_status[3], soliders_status[0], total_time, torch);
+    s6 : process runner(soliders_status[3], soliders_status[1], total_time, torch);
+    s6 : process runner(soliders_status[3], soliders_status[2], total_time, torch);
+
+ASSIGN
+    init(torch) := free;
+    init(soliders_status[0]) := waiting_start;
+    init(soliders_status[1]) := waiting_start;
+    init(soliders_status[2]) := waiting_start;
+    init(soliders_status[3]) := waiting_start;
