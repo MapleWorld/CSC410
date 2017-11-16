@@ -9,7 +9,7 @@ ASSIGN
         
         location = waiting_start: {waiting_start, crossing_forward};
         location = waiting_end: {waiting_end, crossing_backward};
-        
+
         -- if two soilders and torch are both available then cross the bridge
         location = crossing_forward & solider1 = waiting_start & solider2 = waiting_start & torch = free: {waiting_end};
 
@@ -70,6 +70,7 @@ VAR
 
 ASSIGN
     init(torch) := free;
+    init(total_time) := 0;
     init(soliders_status[0]) := waiting_start;
     init(soliders_status[1]) := waiting_start;
     init(soliders_status[2]) := waiting_start;
