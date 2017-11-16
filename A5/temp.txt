@@ -1,0 +1,12 @@
+read_model -i filename.smv
+fallten_hierarchy
+encode_variables
+build_model
+
+pick_state -i
+simulate -i -k 15
+print_reachable_states -v
+
+check_ltlspec =p "G (x >= 0)"
+check_ltlspec =p "F (x >= 5)"
+check_ltlspec =p "G (request = TRUE -> F status = busy)"

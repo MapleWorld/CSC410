@@ -1,0 +1,24 @@
+MODULE runner(solider1, time1, solider2, time2, totalTime, torch)
+VAR 
+    location: {waiting};
+    
+ASSIGN
+    init(location) := waiting;
+    next(location) := case
+        location = waiting: {waiting, };
+
+        fuck
+        fuck
+        fuck
+
+MODULE main
+VAR
+    time : 0 .. 1000;
+    torch: {free, taken};
+    soliders_time : array 0 .. 3 of {waiting, 5, 10, 20, 25};
+    s1 : process runner(0, soliders_time[0], 1, soilders_time[1], time, torch);
+    s2 : process runner(0, soliders_time[0], 2, soilders_time[2], time, torch);
+    s3 : process runner(0, soliders_time[0], 3, soilders_time[3], time, torch);
+    s4 : process runner(1, soliders_time[1], 2, soilders_time[2], time, torch);
+    s5 : process runner(1, soliders_time[1], 3, soilders_time[3], time, torch);
+    s6 : process runner(2, soliders_time[2], 3, soilders_time[3], time, torch);
