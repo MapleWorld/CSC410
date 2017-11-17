@@ -1,4 +1,5 @@
-./NuSMV -int
+./NuSMV -int philosopher.smv
+
 read_model -i q1.smv
 flatten_hierarchy
 encode_variables
@@ -8,9 +9,9 @@ pick_state -i
 simulate -i -k 15
 print_reachable_states -v
 
-check_ltlspec =p "G (x >= 0)"
-check_ltlspec =p "F (x >= 5)"
-check_ltlspec =p "G (request = TRUE -> F status = busy)"
+check_ltlspec -p "G (x >= 0)"
+check_ltlspec -p "F (x >= 5)"
+check_ltlspec -p "G (request = TRUE -> F status = busy)"
 
 
 

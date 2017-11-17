@@ -45,3 +45,6 @@ ASSIGN
     init(sticks[2]) := free;
     init(sticks[3]) := free;
 
+
+
+--check_ltlspec -p "F (phil0.location = eat)"

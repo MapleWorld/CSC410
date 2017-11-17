@@ -1,32 +1,35 @@
 -- Two soliders wait for torch and cross the bridge, anyone of them can come back
-MODULE runner(solider1, solider2, t1, t2, total_time, torch)
+MODULE runner(soliderA, soliderB, torch, status, all_crossed)
 VAR 
     location: {waiting_start, waiting_end, crossing_forward, crossing_backward};
     
 ASSIGN
     init(location) := waiting_start;
+
     next(location) := case
+        location = waiting_start: crossing_forward;
         
-        location = waiting_start: {waiting_start, crossing_forward};
-        location = waiting_end: {waiting_end, crossing_backward};
-
         -- if two soilders and torch are both available then cross the bridge
-        location = crossing_forward & solider1 = waiting_start & solider2 = waiting_start & torch = free: {waiting_end};
+        location = crossing_forward & soliderA = waiting_start & soliderB = waiting_start & torch = free: waiting_end;
 
-        -- Wait at the end or cross back again to pick up other solider left behind
-        location = crossing_backward & solider1 = waiting_end: waiting_start;
+        location = waiting_end & all_crossed = FALSE: crossing_backward;
+
+        -- Cross back again to pick up other solider left behind
+        location = crossing_backward & soliderA = waiting_end & soliderB = waiting_end: waiting_start;
+
         TRUE: location;
         esac;
 
-    next(solider1) := case
+    next(soliderA) := case
         location = waiting_end: waiting_end;
-        location = waiting_start: waiting_start;
-        TRUE: solider1;
+        location = waiting_start: {waiting_start, waiting_end};
+        TRUE: soliderA;
         esac;
 
-    next(solider2) := case
+    next(soliderB) := case
         location = waiting_end: waiting_end;
-        TRUE: solider2;
+        location = waiting_start: {waiting_start, waiting_end};
+        TRUE: soliderB;
         esac;
 
     next(torch) := case
@@ -35,24 +38,23 @@ ASSIGN
         TRUE: torch;
         esac;   
 
-    next(total_time) := case
-        location = waiting_end & total_time <= 60 & t1 > t2: total_time + t1;
-        location = waiting_end & total_time <= 60 & t2 > t1: total_time + t2;
-        location = waiting_start & total_time <= 60: total_time + t1;
-        TRUE: total_time;
-        esac;
+    -- Check whether everyone cross the bridge or not
+    next(all_crossed) := (status[0] = waiting_end & status[1] = waiting_end);
+
+
 
 MODULE main
 VAR
-    total_time : 0 .. 1000;
+    --total_time : 0 .. 1000;
     torch: {free, taken};
-    t0: 0 .. 25;
-    t1: 0 .. 25;
-    t2: 0 .. 25;
-    t3: 0 .. 25;
-    soliders_status: array 0 .. 3 of {waiting_start, waiting_end};
+    all_crossed: boolean;
+    --t0: 0 .. 25;
+    --t1: 0 .. 25;
+    --t2: 0 .. 25;
+    --t3: 0 .. 25;
+    soliders_status: array 0 .. 1 of {waiting_start, waiting_end};
 
-    s1: process runner(soliders_status[0], soliders_status[1], t0, t1, total_time, torch);
+    s1: runner(soliders_status[0], soliders_status[1], torch, soliders_status, all_crossed);
     --s2: process runner(soliders_status[0], soliders_status[2], t0, t2, total_time, torch);
     --s3: process runner(soliders_status[0], soliders_status[3], t0, t3, total_time, torch);
 
@@ -70,14 +72,17 @@ VAR
 
 ASSIGN
     init(torch) := free;
-    init(total_time) := 0;
+    --init(total_time) := 0;
     init(soliders_status[0]) := waiting_start;
     init(soliders_status[1]) := waiting_start;
-    init(soliders_status[2]) := waiting_start;
-    init(soliders_status[3]) := waiting_start;
-    init(t0) := 5;
-    init(t1) := 10;
-    init(t2) := 20;
-    init(t3) := 25;
+    --init(soliders_status[2]) := waiting_start;
+    --init(soliders_status[3]) := waiting_start;
+    --init(t0) := 5;
+    --init(t1) := 10;
+    --init(t2) := 20;
+    --init(t3) := 25;
+    init(all_crossed) := FALSE;
 
 --check_ltlspec =p "G (total_time <= 60 -> F soliders_status[0] = waiting_end & soliders_status[1] = waiting_end & soliders_status[2] = waiting_end & soliders_status[3] = waiting_end)"
+
+--check_ltlspec -p "F (all_crossed = TRUE)"
