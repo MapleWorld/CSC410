@@ -1,0 +1,73 @@
+MODULE main
+VAR
+    torch: {free, busy};
+    all_crossed: boolean;
+    status: array 0 .. 3 of {waiting_start, waiting_end};
+    s1: runner(status[0], status[1], status, all_crossed, torch);
+    s2: runner(status[0], status[2], status, all_crossed, torch);
+    --s3: runner(status[0], status[3], status, all_crossed, torch);
+    --s4: runner(status[1], status[0], status, all_crossed, torch);
+    --s5: runner(status[1], status[2], status, all_crossed, torch);
+    --s6: runner(status[1], status[3], status, all_crossed, torch);
+    --s7: runner(status[2], status[0], status, all_crossed, torch);
+    --s8: runner(status[2], status[1], status, all_crossed, torch);
+    --s9: runner(status[2], status[3], status, all_crossed, torch);
+    --s10: runner(status[3], status[0], status, all_crossed, torch);
+    --s11: runner(status[3], status[1], status, all_crossed, torch);
+    --s12: runner(status[3], status[2], status, all_crossed, torch);
+
+ASSIGN
+    init(torch) := free;
+    init(status[0]) := waiting_start;
+    init(status[1]) := waiting_start;
+    init(status[2]) := waiting_start;
+    init(status[3]) := waiting_start;
+    init(all_crossed) := FALSE;
+
+MODULE runner(soliderA, soliderB, status, all_crossed, torch)
+VAR
+    location: {waiting_start, waiting_end, crossing_forward, crossing_backward};
+ASSIGN
+    init(location) := waiting_start;
+    next(soliderA) := case
+        location = waiting_end: waiting_end;
+        location = crossing_backward: {waiting_start, waiting_end};
+        TRUE: soliderA;
+        esac;
+
+    next(soliderB) := case
+        location = waiting_end: waiting_end;
+        location = crossing_backward: {waiting_start, waiting_end};
+        TRUE: soliderB;
+        esac;
+
+    -- Check if everyone crossed the bridge or not
+    next(all_crossed) := case
+        all_crossed = FALSE: (status[0] = waiting_end & status[1] = waiting_end & status[2] = waiting_end & status[3] = waiting_end);
+        TRUE: all_crossed;
+        esac;
+
+    next(location) := case
+        location = waiting_start & soliderA = waiting_start & soliderB = waiting_start & torch = free: crossing_forward;
+        location = waiting_end & all_crossed = FALSE: crossing_backward;
+        location = crossing_backward & (soliderB = waiting_start | soliderB = waiting_start): waiting_start;
+        location = crossing_forward: waiting_end;
+        TRUE: location;
+        esac;
+
+    next(torch) := case
+        location = crossing_forward: busy;
+        location = crossing_backward: free;
+        location = waiting_start: free;
+        location = waiting_end: busy;
+        TRUE: torch;
+        esac;
+
+
+
+--check_ltlspec -p "F (all_crossed = TRUE)"
+--check_ltlspec -p "F (status[0] = waiting_end)"
+
+
+--check_ltlspec -p "F (all_crossed = TRUE)"
+--check_ltlspec -p "G (total_time <= 60 -> F (status[0] = waiting_end & status[1] = waiting_end & status[2] = waiting_end & status[3])= waiting_end)"

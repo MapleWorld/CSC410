@@ -1,6 +1,6 @@
 MODULE main
 VAR
-    total_time: 0 .. 1000;
+    --total_time: 0 .. 1000;
     torch: {free, busy};
     all_crossed: boolean;
     soliderA: {waiting_start, waiting_end};
@@ -8,20 +8,20 @@ VAR
     status: array 0 .. 3 of {waiting_start, waiting_end};
     indexA: {0, 1, 2, 3};
     indexB: {0, 1, 2, 3};
-    time: array 0 .. 3 of {5, 10, 20, 25};
+    --time: array 0 .. 3 of {5, 10, 20, 25};
     location: {waiting_start, waiting_end, crossing_forward, crossing_backward};
 
 ASSIGN
-    init(total_time) := 0;
+    --init(total_time) := 0;
     init(torch) := free;
     init(status[0]) := waiting_start;
     init(status[1]) := waiting_start;
     init(status[2]) := waiting_start;
     init(status[3]) := waiting_start;
-    init(time[0]) := 5;
-    init(time[1]) := 10;
-    init(time[2]) := 20;
-    init(time[3]) := 25;
+    --init(time[0]) := 5;
+    --init(time[1]) := 10;
+    --init(time[2]) := 20;
+    --init(time[3]) := 25;
     init(all_crossed) := FALSE;
     init(soliderA) := status[0];
     init(soliderB) := status[1];
@@ -29,6 +29,7 @@ ASSIGN
     init(indexB) := 1;
     init(location) := waiting_start;
 
+    -- Get random index
     next(indexA) := case
         location = waiting_start: {0, 1, 2, 3};
         TRUE: indexA;
@@ -39,6 +40,7 @@ ASSIGN
         TRUE: indexB;
         esac;
 
+    -- Update solider info
     next(soliderA) := case
         location = waiting_start: status[indexA];
         location = waiting_end: waiting_end;
@@ -53,6 +55,31 @@ ASSIGN
         TRUE: soliderB;
         esac;
 
+    next(status[0]) := case
+        0 = indexA & soliderA = waiting_end: soliderA;
+        0 = indexB & soliderB = waiting_end: soliderB;
+        TRUE: status[0];
+        esac;
+
+    next(status[1]) := case
+        1 = indexA & soliderA = waiting_end: soliderA;
+        1 = indexB & soliderB = waiting_end: soliderB;
+        TRUE: status[1];
+        esac;
+
+    next(status[2]) := case
+        2 = indexA & soliderA = waiting_end: soliderA;
+        2 = indexB & soliderB = waiting_end: soliderB;
+        TRUE: status[2];
+        esac;
+
+    next(status[3]) := case
+        3 = indexA & soliderA = waiting_end: soliderA;
+        3 = indexB & soliderB = waiting_end: soliderB;
+        TRUE: status[3];
+        esac;
+
+    -- Update location
     next(location) := case
         location = waiting_start & soliderA = waiting_start & soliderB = waiting_start & torch = free: crossing_forward;
         location = waiting_end & all_crossed = FALSE: crossing_backward;
@@ -60,6 +87,10 @@ ASSIGN
         location = crossing_forward: waiting_end;
         TRUE: location;
         esac;
+
+
+
+    -- Update torch info
 
     next(torch) := case
         location = crossing_forward: busy;
