@@ -1,123 +1,129 @@
 MODULE main
 VAR
-    --total_time: 0 .. 1000;
+    -- Time constraint for part a, e
+    total_time: 0 .. 100;
+    time: array 0 .. 2 of {5, 10, 20};
+    --
+
     torch: {free, busy};
     all_crossed: boolean;
-    soliderA: {waiting_start, waiting_end};
-    soliderB: {waiting_start, waiting_end};
-    status: array 0 .. 3 of {waiting_start, waiting_end};
-    indexA: {0, 1, 2, 3};
-    indexB: {0, 1, 2, 3};
-    --time: array 0 .. 3 of {5, 10, 20, 25};
+    indexA: {0, 1, 2};
+    indexB: {0, 1, 2};
+    soldierA: {waiting_start, waiting_end};
+    soldierB: {waiting_start, waiting_end};
+    status: array 0 .. 2 of {waiting_start, waiting_end};
     location: {waiting_start, waiting_end, crossing_forward, crossing_backward};
 
 ASSIGN
-    --init(total_time) := 0;
+    init(indexA) := 0;
+    init(indexB) := 1;
+
+    -- Time constraint for part a, e
+    init(time[0]) := 5;
+    init(time[1]) := 10;
+    init(time[2]) := 20;
+    init(total_time) := 0;
+    --
+
     init(torch) := free;
+    init(all_crossed) := FALSE;
+    init(soldierA) := status[0];
+    init(soldierB) := status[1];
+    init(location) := waiting_start;
     init(status[0]) := waiting_start;
     init(status[1]) := waiting_start;
     init(status[2]) := waiting_start;
-    init(status[3]) := waiting_start;
-    --init(time[0]) := 5;
-    --init(time[1]) := 10;
-    --init(time[2]) := 20;
-    --init(time[3]) := 25;
-    init(all_crossed) := FALSE;
-    init(soliderA) := status[0];
-    init(soliderB) := status[1];
-    init(indexA) := 0;
-    init(indexB) := 1;
-    init(location) := waiting_start;
 
-    -- Get random index
+    -- Init time as constant
+    next(time[0]) := 5;
+    next(time[1]) := 10;
+    next(time[2]) := 20;
+
+    -- Get random index to select random soldier to cross the bridge
     next(indexA) := case
-        location = waiting_start: {0, 1, 2, 3};
+        location = waiting_start: {0, 1, 2};
         TRUE: indexA;
         esac;
 
     next(indexB) := case
-        location = waiting_start: {0, 1, 2, 3};
+        location = waiting_start: {0, 1, 2};
         TRUE: indexB;
         esac;
 
-    -- Update solider info
-    next(soliderA) := case
+    -- Pick and update soldier info
+    next(soldierA) := case
         location = waiting_start: status[indexA];
         location = waiting_end: waiting_end;
         location = crossing_backward: {waiting_start, waiting_end};
-        TRUE: soliderA;
+        TRUE: soldierA;
         esac;
 
-    next(soliderB) := case
+    next(soldierB) := case
         location = waiting_start: status[indexB];
         location = waiting_end: waiting_end;
         location = crossing_backward: {waiting_start, waiting_end};
-        TRUE: soliderB;
+        TRUE: soldierB;
         esac;
 
+    -- Update soldiers status
     next(status[0]) := case
-        0 = indexA & soliderA = waiting_end: soliderA;
-        0 = indexB & soliderB = waiting_end: soliderB;
+        0 = indexA & indexA != indexB & location = crossing_backward: soldierA;
+        0 = indexB & indexA != indexB & location = crossing_backward: soldierB;
+        (0 = indexA | 0 = indexB) & indexA != indexB & location = waiting_end: waiting_end;
         TRUE: status[0];
         esac;
 
     next(status[1]) := case
-        1 = indexA & soliderA = waiting_end: soliderA;
-        1 = indexB & soliderB = waiting_end: soliderB;
+        1 = indexA & indexA != indexB & location = crossing_backward: soldierA;
+        1 = indexB & indexA != indexB & location = crossing_backward: soldierB;
+        (1 = indexA | 1 = indexB) & indexA != indexB & location = waiting_end: waiting_end;
         TRUE: status[1];
         esac;
 
     next(status[2]) := case
-        2 = indexA & soliderA = waiting_end: soliderA;
-        2 = indexB & soliderB = waiting_end: soliderB;
+        2 = indexA & indexA != indexB & location = crossing_backward: soldierA;
+        2 = indexB & indexA != indexB & location = crossing_backward: soldierB;
+        (2 = indexA | 2 = indexB) & indexA != indexB & location = waiting_end: waiting_end;
         TRUE: status[2];
         esac;
 
-    next(status[3]) := case
-        3 = indexA & soliderA = waiting_end: soliderA;
-        3 = indexB & soliderB = waiting_end: soliderB;
-        TRUE: status[3];
+    -- Check if everyone crossed the bridge or not
+    next(all_crossed) := case
+        all_crossed = FALSE: (next(status[0]) = waiting_end & next(status[1]) = waiting_end & next(status[2]) = waiting_end);
+        TRUE: all_crossed;
+        esac;
+
+    -- Time constraint for part a, e
+    -- Code blow makes execution real slow --
+    -- Only add the max of the two soldier time to the total
+    next(total_time) := case
+        location = waiting_end & time[indexA] >= time[indexB] & total_time <= 60: total_time + time[indexA];
+        location = waiting_end & time[indexB] >= time[indexA] & total_time <= 60: total_time + time[indexB];
+        location = crossing_backward & soldierA = waiting_start & soldierB = waiting_end & total_time <= 60: total_time + time[indexA];
+        location = crossing_backward & soldierA = waiting_end & soldierB = waiting_start & total_time <= 60: total_time + time[indexB];
+        TRUE: total_time;
         esac;
 
     -- Update location
     next(location) := case
-        location = waiting_start & soliderA = waiting_start & soliderB = waiting_start & torch = free: crossing_forward;
+        location = waiting_start & status[indexA] = waiting_start & status[indexB] = waiting_start & torch = free: crossing_forward;
         location = waiting_end & all_crossed = FALSE: crossing_backward;
-        location = crossing_backward & (soliderB = waiting_start | soliderB = waiting_start): waiting_start;
+        location = crossing_backward & (soldierB = waiting_start | soldierB = waiting_start): waiting_start;
         location = crossing_forward: waiting_end;
         TRUE: location;
         esac;
 
-
-
     -- Update torch info
-
     next(torch) := case
         location = crossing_forward: busy;
-        location = crossing_backward: free;
+        location = crossing_backward & (soldierB = waiting_start | soldierB = waiting_start): free;
         location = waiting_start: free;
         location = waiting_end: busy;
         TRUE: torch;
         esac;
 
-    -- Check if everyone crossed the bridge or not
-    next(all_crossed) := case
-        all_crossed = FALSE: (status[0] = waiting_end & status[1] = waiting_end & status[2] = waiting_end & status[3] = waiting_end);
-        TRUE: all_crossed;
-        esac;
 
-    -- Code blow makes execution real slow, get the rest to work before working on time --
-    --next(total_time) := case
-    --    location = waiting_end & time[indexA] > time[indexB] & total_time < 500: total_time + time[indexA];
-    --    location = waiting_end & time[indexB] > time[indexA] & total_time < 500: total_time + time[indexB];
-    --    location = crossing_backward & soliderA = waiting_start & soliderB = waiting_end & total_time < 500: total_time + time[indexA];
-    --    location = crossing_backward & soliderA = waiting_end & soliderB = waiting_start & total_time < 500: total_time + time[indexB];
-    --    location = crossing_backward & soliderA = waiting_start & soliderB = waiting_start & time[indexB] >= time[indexA] & total_time < 500: total_time + time[indexB];
-    --    location = crossing_backward & soliderA = waiting_start & soliderB = waiting_start & time[indexA] > time[indexB] & total_time < 500: total_time + time[indexA];
-    --    TRUE: total_time;
-    --    esac;
-
-
-
---check_ltlspec -p "F (all_crossed = TRUE)"
---check_ltlspec -p "G (total_time <= 60 -> F (status[0] = waiting_end & status[1] = waiting_end & status[2] = waiting_end & status[3])= waiting_end)"
+--check_ltlspec -p "!F (total_time <= 35 & all_crossed = TRUE)"
+--check_ltlspec -p "!F (total_time <= 60 & status[0] = waiting_end & status[1] = waiting_end & status[2] = waiting_end & status[3] = waiting_end)"
+-- check_ltlspec -p "!F (status[0] = waiting_end & status[1] = waiting_end & status[2] = waiting_end & status[3] = waiting_end)"
+-- check_ltlspec -p "F (indexA != indexB & indexA -> F (status[0] = waiting_end & status[1] = waiting_end & status[2] = waiting_end & status[3] = waiting_end))"

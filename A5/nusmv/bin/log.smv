@@ -1,0 +1,79 @@
+  -> State: 1.1 <-
+    total_time = 0
+    torch = free
+    all_crossed = FALSE
+    soldierA = waiting_start
+    soldierB = waiting_start
+    status[0] = waiting_start
+    status[1] = waiting_start
+    status[2] = waiting_start
+    status[3] = waiting_start
+    indexA = 0
+    indexB = 1
+    time[0] = 5
+    time[1] = 10
+    time[2] = 20
+    time[3] = 25
+    location = waiting_start
+  -> State: 1.2 <-
+    indexA = 2
+    location = crossing_forward
+  -> State: 1.3 <-
+    torch = busy
+    location = waiting_end
+  -> State: 1.4 <-
+    soldierA = waiting_end
+    soldierB = waiting_end
+    location = crossing_backward
+  -> State: 1.5 <-
+    torch = free
+    soldierB = waiting_start
+    status[1] = waiting_end
+    status[2] = waiting_end
+  -> State: 1.6 <-
+    total_time = 10
+    soldierA = waiting_start
+    location = waiting_start
+  -> State: 1.7 <-
+    soldierA = waiting_end
+    soldierB = waiting_end
+    indexA = 3
+    indexB = 0
+    location = crossing_forward
+  -> State: 1.8 <-
+    torch = busy
+    status[0] = waiting_end
+    status[3] = waiting_end
+    location = waiting_end
+  -> State: 1.9 <-
+    total_time = 35
+    all_crossed = TRUE
+    location = crossing_backward
+  -> State: 1.10 <-
+    torch = free
+    soldierA = waiting_start
+    soldierB = waiting_start
+  -> State: 1.11 <-
+    location = waiting_start
+  -> State: 1.12 <-
+    soldierA = waiting_end
+    soldierB = waiting_end
+    indexA = 0
+    location = crossing_forward
+  -> State: 1.13 <-
+    torch = busy
+    location = waiting_end
+  -> State: 1.14 <-
+    total_time = 40
+  -> State: 1.15 <-
+    total_time = 45
+  -> State: 1.16 <-
+    total_time = 50
+  -> State: 1.17 <-
+    total_time = 55
+  -> State: 1.18 <-
+    total_time = 60
+  -- Loop starts here
+  -> State: 1.19 <-
+    total_time = 65
+  -> State: 1.20 <-

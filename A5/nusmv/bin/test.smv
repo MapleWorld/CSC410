@@ -65,6 +65,8 @@ ASSIGN
 
 -- check_ltlspec -p "F (status[0] = waiting_end)"
 -- check_ltlspec -p "F (status[0] = waiting_end & status[1] = waiting_end)"
+-- check_ltlspec -p "F (indexA != indexB -> F (status[0] = waiting_end & status[1] = waiting_end))"
+-- check_ltlspec -p "!F (status[0] = waiting_end & status[1] = waiting_end)"
 
     -- Check if everyone crossed the bridge or not
     next(all_crossed) := case

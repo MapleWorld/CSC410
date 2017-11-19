@@ -1,0 +1,146 @@
+MODULE main
+VAR
+    -- Time constraint for part a, e
+    total_time: 0 .. 100;
+    time: array 0 .. 3 of {5, 10, 20, 25};
+    --
+
+    torch: {free, busy};
+    all_crossed: boolean;
+    indexA: {0, 1, 2, 3};
+    indexB: {0, 1, 2, 3};
+    soldierA: {waiting_start, waiting_end};
+    soldierB: {waiting_start, waiting_end};
+    status: array 0 .. 3 of {waiting_start, waiting_end};
+    location: {waiting_start, waiting_end, crossing_forward, crossing_backward};
+
+ASSIGN
+    init(indexA) := 0;
+    init(indexB) := 1;
+    init(torch) := free;
+    init(all_crossed) := FALSE;
+    init(soldierA) := waiting_start;
+    init(soldierB) := waiting_start;
+    init(location) := waiting_start;
+    init(status[0]) := waiting_start;
+    init(status[1]) := waiting_start;
+    init(status[2]) := waiting_start;
+    init(status[3]) := waiting_start;
+
+    -- Time constant
+    init(total_time) := 0;
+
+    -- Init time as constant
+    time[0] := 5;
+    time[1] := 10;
+    time[2] := 20;
+    time[3] := 25;
+
+    -- Get random index to select random soldier to cross the bridge
+    next(indexA) := case
+        location = waiting_start & soldierA != waiting_start: {0, 1, 2, 3};
+        location = crossing_backward & soldierA != waiting_start: {0, 1, 2, 3};
+        TRUE: indexA;
+        esac;
+
+    next(indexB) := case
+        location = waiting_start & soldierB != waiting_start: {0, 1, 2, 3};
+        location = crossing_backward & soldierB != waiting_start: {0, 1, 2, 3};
+        TRUE: indexB;
+        esac;   
+
+    -- Pick and update soldier info
+    next(soldierA) := case
+        location = waiting_start: status[next(indexA)];
+        location = waiting_end: waiting_end;
+        location = crossing_backward & status[next(indexA)] = waiting_end & status[next(indexB)] = waiting_end: {waiting_start, waiting_end};
+        TRUE: soldierA;
+        esac;
+
+    next(soldierB) := case
+        location = waiting_start: status[next(indexB)];
+        location = waiting_end: waiting_end;
+        location = crossing_backward & status[next(indexA)] = waiting_end & status[next(indexB)] = waiting_end: {waiting_start, waiting_end};
+        TRUE: soldierB;
+        esac;
+
+    -- Update soldiers status
+    next(status[0]) := case
+        0 = indexA & location = crossing_backward & soldierA = waiting_start: waiting_start;
+        0 = indexB & location = crossing_backward & soldierB = waiting_start: waiting_start;
+        (0 = indexA | 0 = indexB) & location = waiting_end: waiting_end;
+        TRUE: status[0];
+        esac;
+
+    next(status[1]) := case
+        1 = indexA & location = crossing_backward & soldierA = waiting_start: waiting_start;
+        1 = indexB & location = crossing_backward & soldierB = waiting_start: waiting_start;
+        (1 = indexA | 1 = indexB) & location = waiting_end: waiting_end;
+        TRUE: status[1];
+        esac;
+
+    next(status[2]) := case
+        2 = indexA & location = crossing_backward & soldierA = waiting_start: waiting_start;
+        2 = indexB & location = crossing_backward & soldierB = waiting_start: waiting_start;
+        (2 = indexA | 2 = indexB) & location = waiting_end: waiting_end;
+        TRUE: status[2];
+        esac;
+
+    next(status[3]) := case
+        3 = indexA & location = crossing_backward & soldierA = waiting_start: waiting_start;
+        3 = indexB & location = crossing_backward & soldierB = waiting_start: waiting_start;
+        (3 = indexA | 3 = indexB) & location = waiting_end: waiting_end;
+        TRUE: status[3];
+        esac;
+
+    -- Check if everyone crossed the bridge or not
+    next(all_crossed) := case
+        all_crossed = FALSE: (next(status[0]) = waiting_end & next(status[1]) = waiting_end & next(status[2]) = waiting_end & next(status[3]) = waiting_end);
+        TRUE: all_crossed;
+        esac;
+
+    -- Time constraint for part a, e
+    -- Code blow makes execution real slow --
+    -- Only add the max of the two soldier time to the total
+    next(total_time) := case
+        location = waiting_end & time[indexA] >= time[indexB] & total_time <= 65: total_time + time[indexA];
+        location = waiting_end & time[indexB] >= time[indexA] & total_time <= 65: total_time + time[indexB];
+        location = crossing_backward & soldierA = waiting_start & soldierB = waiting_end & total_time <= 60: total_time + time[next(indexA)];
+        location = crossing_backward & soldierA = waiting_end & soldierB = waiting_start & total_time <= 60: total_time + time[next(indexB)];
+        location = crossing_backward & indexA = indexB & total_time <= 60: total_time + time[next(indexA)];
+        TRUE: total_time;
+        esac;
+
+    -- Update location
+    next(location) := case
+        location = waiting_start & soldierA = waiting_start & soldierB = waiting_start & torch = free: crossing_forward;
+        location = waiting_end & next(all_crossed) = FALSE: crossing_backward;
+        location = crossing_backward & (soldierA = waiting_start | soldierB = waiting_start): waiting_start;
+        location = crossing_forward: waiting_end;
+        TRUE: location;
+        esac;
+
+    -- Update torch info
+    next(torch) := case
+        location = crossing_forward: busy;
+        location = crossing_backward & (soldierB = waiting_start | soldierB = waiting_start): free;
+        location = waiting_start: free;
+        location = waiting_end: busy;
+        TRUE: torch;
+        esac;
+
+--check_ltlspec -p "!F (total_time <= 60 & all_crossed = TRUE)"
+--check_ltlspec -p "!F (total_time <= 65 & all_crossed = TRUE)"
+
+-- Part A: Can all soldiers cross the bridge in 60 minutes or less
+LTLSPEC
+    !F (total_time < 60 & all_crossed = TRUE)
+
+-- Part C: Step-by-step scenario under which all soldiers can cross the bridge?
+LTLSPEC
+    !F (all_crossed = TRUE)
+
+-- Part E: Step-by-step scenario under which all soldiers across the bridge within 60 minutes?
+LTLSPEC
+    !F (total_time <= 60 & all_crossed = TRUE)
+
