@@ -1,7 +1,8 @@
 HOW TO EXECUTE NuSUM
 
 Navigate to A5/nusmv/bin folder, then type
-    ./NuSMV -int q1-test.smv
+    ./NuSMV -int soldiers.smv
+    /u/csc410h/fall/pub/NuSMV-2.6.0-Linux/bin/NuSMV -int soldiers.smv
 
 Then type "go" to compile
 
