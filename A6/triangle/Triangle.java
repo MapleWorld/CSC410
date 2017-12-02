@@ -6,6 +6,10 @@ class Triangle {
     public static final int ISOSCELES = 1;
     public static final int SCALENE = 2;
 
+    public static void main (String[] args) {
+        int type = classify (3, 4, 5);
+    }
+
     public static void test (int x) {
         int type = classify (3, 4, x);
     }
