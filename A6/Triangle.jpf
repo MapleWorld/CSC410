@@ -1,6 +1,5 @@
 # here write your own classpath and un-comment  
 target = triangle.Triangle
-#classpath=/u/csc410h/fall/pub/tutorial3
 classpath=/h/u7/g3/00/yeou/CSC410/A6
 
 symbolic.method= triangle.Triangle.classify(sym#sym#sym) 
