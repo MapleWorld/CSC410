@@ -1,9 +1,9 @@
 # here write your own classpath and un-comment  
-target = triangle.Classify
+target = triangle.Triangle
 #classpath=/u/csc410h/fall/pub/tutorial3
 classpath= ~/CSC410/A6
 
-symbolic.method= triangle.Classify.classify(sym#sym#sym) 
+symbolic.method= triangle.Triangle.classify(sym#sym#sym) 
 # listener to print information: PCs, test cases 
 listener = gov.nasa.jpf.symbc.SymbolicListener 
 # The following JPF options are usually used for SPF as well: 
