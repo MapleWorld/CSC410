@@ -2,7 +2,7 @@
 target = triangle.Triangle
 classpath=/h/u7/g3/00/yeou/CSC410/A6
 
-symbolic.method= triangle.Triangle.classify(con#con#sym) 
+symbolic.method= triangle.Triangle.classify(sym#sym#sym) 
 # listener to print information: PCs, test cases 
 listener = gov.nasa.jpf.symbc.SymbolicListener 
 # The following JPF options are usually used for SPF as well: 

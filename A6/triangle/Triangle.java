@@ -7,11 +7,11 @@ class Triangle {
     public static final int SCALENE = 2;
 
     public static void main (String[] args) {
-        test(2);
+	test(1, 2, 3);
     }
 
-    public static void test (int x) {
-        int type = classify (x, 3, 4);
+    public static void test (int x, int y, int z) {
+        int type = classify(x, y, z);
     }
 
     public static int classify (int a, int b, int c) {
