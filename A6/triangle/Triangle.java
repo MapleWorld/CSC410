@@ -7,9 +7,19 @@ class Triangle {
     public static final int SCALENE = 2;
 
     public static void main (String[] args) {
-	test(1, 2, 3);
+	   // For part c
+       test(1);
+
+       // For part d
+       test(1, 2, 3);
     }
 
+    // For part c
+    public static void test (int x) {
+        int type = classify (3, 4, x);
+    }
+
+    // For part d
     public static void test (int x, int y, int z) {
         int type = classify(x, y, z);
     }
