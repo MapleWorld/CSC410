@@ -7,10 +7,10 @@ class Triangle {
     public static final int SCALENE = 2;
 
     public static void main (String[] args) {
-	   // For part c
+	   // For part c, comment it out when testing part d
        test(1);
 
-       // For part d
+       // For part d, comment it out when testing part c
        test(1, 2, 3);
     }
 
